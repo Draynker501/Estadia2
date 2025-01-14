@@ -37,9 +37,13 @@ class CustomerResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(50),
-                Forms\Components\TextInput::make('status')
-                    ->required()
-                    ->maxLength(15),
+                Forms\Components\Select::make('status')
+                    ->options([
+                        'activo' => 'Activo',
+                        'inactiv' => 'Inactivo',
+                    ])
+                    ->native(false)
+                    ->required(),
             ]);
     }
 
