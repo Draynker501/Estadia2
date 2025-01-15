@@ -40,7 +40,7 @@ class CustomerResource extends Resource
                 Forms\Components\Select::make('status')
                     ->options([
                         'activo' => 'Activo',
-                        'inactiv' => 'Inactivo',
+                        'inactivo' => 'Inactivo',
                     ])
                     ->native(false)
                     ->required(),
