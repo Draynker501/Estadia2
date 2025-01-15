@@ -16,4 +16,10 @@ class EditPermission extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    //Redirecciona al index luego de editar un registro
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }
