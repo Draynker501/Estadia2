@@ -15,10 +15,13 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CustomerResource extends Resource
 {
+    //Define el modelo al que corresponde el recurso
     protected static ?string $model = Customer::class;
 
+    //Define el ícono de navegación del recurso (Lateral izquierdo)
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    //Hace referencia al formulario de customer (create y editar)
     public static function form(Form $form): Form
     {
         return $form
@@ -47,6 +50,7 @@ class CustomerResource extends Resource
             ]);
     }
 
+    //Define la tabla donde se muestran los datos de los customers (index)
     public static function table(Table $table): Table
     {
         return $table
@@ -83,6 +87,7 @@ class CustomerResource extends Resource
             ]);
     }
 
+    //Define las relaciones de customers (No fueron necesarias en este caso)
     public static function getRelations(): array
     {
         return [
@@ -90,6 +95,7 @@ class CustomerResource extends Resource
         ];
     }
 
+    //Define las vistas relacionadas a customers
     public static function getPages(): array
     {
         return [
