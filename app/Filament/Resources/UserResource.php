@@ -97,4 +97,18 @@ class UserResource extends Resource
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        // Verifica si el usuario logueado tiene el rol 'Super Admin'
+        if (!auth()->user()->hasRole('Super Admin')) {
+            // Excluye el usuario 'admin2' para usuarios que no sean Super Admin
+            $query->where('name', '!=', 'admin2');
+        }
+
+        return $query;
+    }
+
 }

@@ -77,9 +77,17 @@ class RoleResource extends Resource
         ];
     }
 
-    //Define la consulta de roles que se muestran en el index
+    //Define la consulta de roles que se muestran en el index (con un filtro para que no se muestre el rol Super Admin)
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('name', '!=', 'Super Admin');
+        $query = parent::getEloquentQuery();
+
+        // Verifica si el usuario logueado tiene el rol 'Super Admin'
+        if (!auth()->user()->hasRole('Super Admin')) {
+            // Excluye el rol 'Super Admin' para usuarios que no sean Super Admin
+            $query->where('name', '!=', 'Super Admin');
+        }
+
+        return $query;
     }
 }
