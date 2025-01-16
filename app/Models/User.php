@@ -51,7 +51,7 @@ class User extends Authenticatable implements FilamentUser
     {
         // Si queremos que solo los usuarios con email de gmail puedan acceder a Filament
         // return str_ends_with($this->email, '@gmail.com') && $this->hasVerifiedEmail();
-        return $this->hasRole('Super Admin');
+        return $this->hasRole(['Super Admin','Administrador','Editor','Autor','Colaborador','Subscriptor']);
     }
     
 }
