@@ -19,7 +19,7 @@ class CustomerResource extends Resource
     protected static ?string $model = Customer::class;
 
     //Define el ícono de navegación del recurso (Lateral izquierdo)
-    protected static ?string $navigationIcon = 'heroicon-o-shoping-bag';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?int $navigationSort = 4;
 
@@ -81,6 +81,7 @@ class CustomerResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

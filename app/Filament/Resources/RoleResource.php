@@ -7,6 +7,7 @@ use App\Filament\Resources\RoleResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -34,8 +35,10 @@ class RoleResource extends Resource
                         ->minLength(2)
                         ->maxLength(255)
                         ->required()
-                        ->unique()
+                        ->unique(ignoreRecord: true)
                         ->placeholder('Name'),
+                    Select::make('permissions')
+                        ->relationship('permissions', 'name')->preload(),
                 ])
             ]);
     }
@@ -51,6 +54,7 @@ class RoleResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -73,5 +77,11 @@ class RoleResource extends Resource
             'create' => Pages\CreateRole::route('/create'),
             'edit' => Pages\EditRole::route('/{record}/edit'),
         ];
+    }
+
+    //Define la consulta de roles que se muestran en el index
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('name', '!=', 'Super Admin');
     }
 }

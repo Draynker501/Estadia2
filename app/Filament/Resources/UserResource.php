@@ -6,6 +6,7 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
@@ -22,6 +23,7 @@ class UserResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?int $navigationSort = 1;
 
+    //Hace referencia al formulario de user (create y editar)
     public static function form(Form $form): Form
     {
         return $form
@@ -38,11 +40,14 @@ class UserResource extends Resource
                     ->password()
                     ->dehydrateStateUsing(fn($state) => Hash::make($state))
                     ->dehydrated(fn($state) => filled($state))
-                    ->required(fn (Page $livewire) => ($livewire instanceof CreateUser))
+                    ->required(fn(Page $livewire) => ($livewire instanceof CreateUser))
                     ->maxLength(255),
+                Select::make('roles')
+                    ->relationship('roles', 'name')->preload(),
             ]);
     }
 
+    //Define la tabla donde se muestran los datos de los users (index)
     public static function table(Table $table): Table
     {
         return $table
@@ -68,6 +73,7 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
