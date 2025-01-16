@@ -6,6 +6,7 @@ use App\Filament\Resources\RoleResource\Pages;
 use App\Filament\Resources\RoleResource\RelationManagers;
 
 use Filament\Forms;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -20,18 +21,22 @@ class RoleResource extends Resource
 {
     protected static ?string $model = Role::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-finger-print';
+
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->minLength(2)
-                    ->maxLength(255)
-                    ->required()
-                    ->unique()
-                    ->placeholder('Name'),
+                Card::make()->schema([
+                    TextInput::make('name')
+                        ->minLength(2)
+                        ->maxLength(255)
+                        ->required()
+                        ->unique()
+                        ->placeholder('Name'),
+                ])
             ]);
     }
 

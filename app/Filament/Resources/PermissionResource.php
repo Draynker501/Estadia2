@@ -6,6 +6,7 @@ use App\Filament\Resources\PermissionResource\Pages;
 use App\Filament\Resources\PermissionResource\RelationManagers;
 
 use Filament\Forms;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -20,17 +21,23 @@ class PermissionResource extends Resource
 {
     protected static ?string $model = Permission::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-key';
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->minLength(2)
-                    ->maxLength(255)
-                    ->required()
-                    ->unique()
+                //Card funciona para darle un estilo de tarjeta al formulario, es decir,
+                //un estilo más convencional
+                Card::make()->schema(components: [
+                    TextInput::make('name')
+                        ->minLength(2)
+                        ->maxLength(255)
+                        ->required()
+                        ->unique()
+                        ->placeholder('Name'),
+                ])
             ]);
     }
 

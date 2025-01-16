@@ -19,7 +19,9 @@ class CustomerResource extends Resource
     protected static ?string $model = Customer::class;
 
     //Define el ícono de navegación del recurso (Lateral izquierdo)
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-shoping-bag';
+
+    protected static ?int $navigationSort = 4;
 
     //Hace referencia al formulario de customer (create y editar)
     public static function form(Form $form): Form
