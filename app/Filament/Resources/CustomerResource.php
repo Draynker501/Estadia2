@@ -88,6 +88,8 @@ class CustomerResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+
+            //Query para filtrar los datos que puede ver el rol "autor" (no funciona)
             // ->query(function (Builder $query) {
             //     $user = auth()->user();
 

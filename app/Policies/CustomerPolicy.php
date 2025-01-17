@@ -13,8 +13,10 @@ class CustomerPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(roles: ['Super Admin', 'Administrador','Editor','Autor','Colaborador']);
-    }
+        if ($user->hasRole(roles: ['Super Admin', 'Administrador']) || $user->hasPermissionTo('Ver cliente')) {
+            return true;
+        }
+        return false;    }
 
     /**
      * Determine whether the user can view the model.
@@ -29,7 +31,10 @@ class CustomerPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(roles: ['Super Admin', 'Administrador','Editor','Autor','Colaborador']);
+        if ($user->hasRole(roles: ['Super Admin', 'Administrador']) || $user->hasPermissionTo('Crear cliente')) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -37,8 +42,10 @@ class CustomerPolicy
      */
     public function update(User $user, Customer $customer): bool
     {
-        return $user->hasRole(roles: ['Super Admin', 'Administrador','Editor','Autor','Colaborador']);
-    }
+        if ($user->hasRole(roles: ['Super Admin', 'Administrador']) || $user->hasPermissionTo('Ver cliente')) {
+            return true;
+        }
+        return false;    }
 
     /**
      * Determine whether the user can delete the model.
