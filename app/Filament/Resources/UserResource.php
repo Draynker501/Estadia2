@@ -33,10 +33,11 @@ class UserResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
                     ->email()
-                    ->unique()
+                    ->unique(ignoreRecord: true)
                     ->required()
                     ->maxLength(255),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
+                Forms\Components\DateTimePicker::make('email_verified_at')
+                    ->required(),
                 Forms\Components\TextInput::make('password')
                     ->password()
                     ->dehydrateStateUsing(fn($state) => Hash::make($state))
@@ -45,6 +46,10 @@ class UserResource extends Resource
                     ->maxLength(255),
                 Select::make('roles')
                     ->relationship('roles', 'name')->preload(),
+                Select::make('permissions')
+                    ->relationship('permissions', 'name')->preload()
+                    ->required()
+                    ->multiple(),
             ]);
     }
 
