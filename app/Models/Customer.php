@@ -15,5 +15,19 @@ class Customer extends Model
         'email',
         'phone',
         'status',
+        'user_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // Establecer `user_id` automáticamente antes de crear un nuevo registro
+    protected static function booted()
+    {
+        static::creating(function ($customer) {
+            $customer->user_id = auth()->id(); // Establece el `user_id` automáticamente
+        });
+    }
 }
