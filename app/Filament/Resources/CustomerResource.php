@@ -37,10 +37,13 @@ class CustomerResource extends Resource
                 Forms\Components\TextInput::make('phone')
                     ->tel()
                     ->required()
+                    ->unique(ignoreRecord: true)
+                    ->minLength(10)
                     ->maxLength(10),
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
+                    ->unique(ignoreRecord: true)
                     ->maxLength(50),
                 Forms\Components\Select::make('status')
                     ->options([
@@ -57,6 +60,8 @@ class CustomerResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('user_id')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('last_name')
@@ -88,14 +93,13 @@ class CustomerResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-
-            //Query para filtrar los datos que puede ver el rol "autor" (no funciona)
+            // // Aquí es donde debes agregar el filtro de "autor"
             // ->query(function (Builder $query) {
             //     $user = auth()->user();
-
-            //     // Aplicar filtro solo si el usuario es "Autor"
-            //     if ($user->hasRole('autor')) {
-            //         $query->where('user_id', $user->id);
+            //     dd($user);
+            //     // Aplicar filtro solo si el usuario tiene el rol "autor"
+            //     if ($user->hasRole('Autor')) {
+            //         $query->where('user_id', '=', $user->id);
             //     }
 
             //     return $query;
