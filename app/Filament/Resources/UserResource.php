@@ -52,6 +52,9 @@ class UserResource extends Resource
                     ->required() // Si quieres que los permisos sean obligatorios
                     ->columns(3) // Opcional, para mostrar los checkboxes en varias columnas
                     ->default(fn($get) => $get('permissions') ?? []), // Establecer valores predeterminados si es necesario
+                Forms\Components\Checkbox::make('send_notification')
+                    ->label('Mandar notificación al correo')
+                    ->default(true) // Marcado por defecto
             ]);
     }
 
