@@ -15,6 +15,10 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Hash;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Notifications\Notification;
+use App\Notifications\WelcomeUserNotification;
+use App\Notifications\UserUpdatedNotification;
+use App\Notifications\UserDeletedNotification;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
@@ -116,10 +120,9 @@ class UserResource extends Resource
         // Verifica si el usuario logueado tiene el rol 'Super Admin'
         if (!auth()->user()->hasRole('Super Admin')) {
             // Excluye el usuario 'admin2' para usuarios que no sean Super Admin
-            $query->where('name', '!=', 'admin2');
+            $query->where('name', '!=', 's');
         }
 
         return $query;
     }
-
 }

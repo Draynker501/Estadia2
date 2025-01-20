@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\UserDeletedNotification;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,6 +27,7 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'email_verified_at',
         'password',
+        'send_notification',
     ];
 
     /**
@@ -53,6 +55,17 @@ class User extends Authenticatable implements FilamentUser
         // Si queremos que solo los usuarios con email de gmail puedan acceder a Filament
         // return str_ends_with($this->email, '@gmail.com') && $this->hasVerifiedEmail();
         return $this->hasRole(['Super Admin','Administrador','Editor','Autor','Colaborador','Subscriptor']);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($user) {
+            if ($user->send_notification) {
+                $user->notify(new UserDeletedNotification());
+            }
+        });
     }
     
 }

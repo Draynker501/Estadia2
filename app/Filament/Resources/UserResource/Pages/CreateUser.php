@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
-use Filament\Actions;
+use App\Notifications\WelcomeUserNotification;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateUser extends CreateRecord
@@ -14,5 +14,13 @@ class CreateUser extends CreateRecord
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
+    }
+
+    // Envía la notificación después de crear un usuario
+    protected function afterCreate(): void
+    {
+        if ($this->record->send_notification) {
+            $this->record->notify(new WelcomeUserNotification());
+        }
     }
 }
