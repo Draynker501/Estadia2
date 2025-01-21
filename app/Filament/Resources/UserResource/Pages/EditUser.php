@@ -33,12 +33,5 @@ class EditUser extends EditRecord
         }
     }
 
-    // Envía la notificación después de eliminar un usuario
-    protected function afterDelete(): void
-    {
-        if ($this->record->send_notification) {
-            $this->record->notify(new UserDeletedNotification());
-        }
-    }
 
 }

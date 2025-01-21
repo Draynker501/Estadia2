@@ -22,7 +22,7 @@ class UserPolicy
      */
     public function view(User $user, User $model): bool
     {
-        //
+        return $user->hasRole(['Super Admin','Administrador']);
     }
 
     /**
@@ -60,7 +60,7 @@ class UserPolicy
      */
     public function restore(User $user, User $model): bool
     {
-        //
+        return $user->hasRole(['Super Admin','Administrador']);
     }
 
     /**
@@ -68,6 +68,6 @@ class UserPolicy
      */
     public function forceDelete(User $user, User $model): bool
     {
-        //
+        return $user->hasRole(['Super Admin','Administrador']);
     }
 }

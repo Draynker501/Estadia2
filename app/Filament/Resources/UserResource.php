@@ -15,10 +15,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Hash;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Notifications\Notification;
-use App\Notifications\WelcomeUserNotification;
-use App\Notifications\UserUpdatedNotification;
-use App\Notifications\UserDeletedNotification;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
@@ -88,11 +84,15 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->action(function ($record) {
+                        dd($record);  // Verifica el estado del registro antes de eliminarlo
+                        $record->delete();
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->requiresConfirmation(), // Confirmación explícita
                 ]),
             ]);
     }
@@ -120,7 +120,7 @@ class UserResource extends Resource
         // Verifica si el usuario logueado tiene el rol 'Super Admin'
         if (!auth()->user()->hasRole('Super Admin')) {
             // Excluye el usuario 'admin2' para usuarios que no sean Super Admin
-            $query->where('name', '!=', 's');
+            $query->where('name', '!=', 'SuperAdmin');
         }
 
         return $query;
