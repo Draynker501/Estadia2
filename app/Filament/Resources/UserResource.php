@@ -83,11 +83,7 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()
-                    ->action(function ($record) {
-                        dd($record);  // Verifica el estado del registro antes de eliminarlo
-                        $record->delete();
-                    }),
+                Tables\Actions\DeleteAction::make()->requiresConfirmation(), // Confirmación explícita
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
