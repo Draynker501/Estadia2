@@ -13,8 +13,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PermissionResource extends Resource
 {
@@ -34,7 +32,7 @@ class PermissionResource extends Resource
                         ->minLength(2)
                         ->maxLength(255)
                         ->required()
-                        ->unique()
+                        ->unique(ignoreRecord: true)
                         ->placeholder('Name'),
                 ])
             ]);
