@@ -26,4 +26,16 @@ class EditPermission extends EditRecord
     {
         return 'Permiso actualizado';
     }
+
+    // Personaliza la acción de guardar para mostrar un modal de confirmación
+    protected function getSaveFormAction(): Actions\Action
+    {
+        return parent::getSaveFormAction()
+            ->submit(form: null)
+            ->requiresConfirmation()
+            ->action(function () {
+                $this->closeActionModal();
+                $this->save();
+            });
+    }
 }
