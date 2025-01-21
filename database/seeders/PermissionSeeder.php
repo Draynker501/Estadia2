@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Permission;
 use Illuminate\Database\Seeder;
 
 class PermissionSeeder extends Seeder
@@ -12,6 +12,19 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        // $permissions = [
+        //     'Crear cliente',
+        //     'Editar cliente',
+        //     'Ver cliente',
+        //     'Eliminar cliente',
+        //     'Ninguno',
+        // ];
+
+        // // Insertar cada permiso en la base de datos
+        // foreach ($permissions as $permission) {
+        //     Permission::create([
+        //         'nombre' => $permission,
+        //     ]);
+        // }
     }
 }

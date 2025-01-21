@@ -36,8 +36,7 @@ class UserResource extends Resource
                     ->unique(ignoreRecord: true)
                     ->required()
                     ->maxLength(255),
-                Forms\Components\DateTimePicker::make('email_verified_at')
-                    ->required(),
+                Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
                     ->password()
                     ->dehydrateStateUsing(fn($state) => Hash::make($state))
@@ -45,7 +44,8 @@ class UserResource extends Resource
                     ->required(fn(Page $livewire) => ($livewire instanceof CreateUser))
                     ->maxLength(255),
                 Select::make('roles')
-                    ->relationship('roles', 'name')->preload(),
+                    ->relationship('roles', 'name')->preload()
+                    ->required(),
                 CheckboxList::make('permissions')
                     ->relationship('permissions', 'name')  // Asocia los permisos con el campo 'permissions' en el modelo
                     ->required() // Si quieres que los permisos sean obligatorios

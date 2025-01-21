@@ -27,7 +27,10 @@ class Customer extends Model
     protected static function booted()
     {
         static::creating(function ($customer) {
-            $customer->user_id = auth()->id(); // Establece el `user_id` automáticamente
+            // Solo establece `user_id` si hay un usuario autenticado (esto evitará que falle en el seeder)
+            if (auth()->check()) {
+                $customer->user_id = auth()->id();
+            }
         });
     }
 }

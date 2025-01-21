@@ -20,15 +20,15 @@ class DatabaseSeeder extends Seeder
         // ]);
         // \App\Models\User::factory(10)->create();
 
-        $user1 = User::factory()->create([
-            'name' => 'admin',
-            'email' => 'admin@gmail.com',
-        ]);
-        $user2 = User::factory()->create([
-            'name' => 'test',
-            'email' => 'test@gmail.com',
-        ]);
-        $role = Role::create(['name' => 'Super Admin']);
-        $user1->assignRole($role);
+        // $user1 = User::factory()->create([
+        //     'name' => 'admin',
+        //     'email' => 'admin@gmail.com',
+        // ]);
+        // $user2 = User::factory()->create([
+        //     'name' => 'test',
+        //     'email' => 'test@gmail.com',
+        // ]);
+        // $role = Role::create(['name' => 'Super Admin']);
+        // $user1->assignRole($role);
     }
 }

@@ -39,7 +39,7 @@ class CustomerResource extends Resource
                     ->required()
                     ->unique(ignoreRecord: true)
                     ->minLength(10)
-                    ->maxLength(10),
+                    ->maxLength(15),
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
@@ -47,8 +47,8 @@ class CustomerResource extends Resource
                     ->maxLength(50),
                 Forms\Components\Select::make('status')
                     ->options([
-                        'activo' => 'Activo',
-                        'inactivo' => 'Inactivo',
+                        'Activo' => 'Activo',
+                        'Inactivo' => 'Inactivo',
                     ])
                     ->native(false)
                     ->required(),
@@ -67,7 +67,11 @@ class CustomerResource extends Resource
                 Tables\Columns\TextColumn::make('last_name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
-                    ->searchable(),
+                    ->searchable()
+                    ->formatStateUsing(function ($state) {
+                        // Si el teléfono no empieza con "+" lo agregamos
+                        return $state && !str_starts_with($state, '+') ? '+' . $state : $state;
+                    }),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
@@ -93,17 +97,17 @@ class CustomerResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-            // // Aquí es donde debes agregar el filtro de "autor"
-            // ->query(function (Builder $query) {
-            //     $user = auth()->user();
-            //     dd($user);
-            //     // Aplicar filtro solo si el usuario tiene el rol "autor"
-            //     if ($user->hasRole('Autor')) {
-            //         $query->where('user_id', '=', $user->id);
-            //     }
+        // // Aquí es donde debes agregar el filtro de "autor"
+        // ->query(function (Builder $query) {
+        //     $user = auth()->user();
+        //     dd($user);
+        //     // Aplicar filtro solo si el usuario tiene el rol "autor"
+        //     if ($user->hasRole('Autor')) {
+        //         $query->where('user_id', '=', $user->id);
+        //     }
 
-            //     return $query;
-            // });
+        //     return $query;
+        // });
     }
 
     //Define las relaciones de customers (No fueron necesarias en este caso)
