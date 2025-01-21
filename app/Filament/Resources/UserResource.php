@@ -83,7 +83,7 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()->requiresConfirmation(), // Confirmación explícita
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -108,17 +108,17 @@ class UserResource extends Resource
         ];
     }
 
-    public static function getEloquentQuery(): Builder
-    {
-        $query = parent::getEloquentQuery();
+    // public static function getEloquentQuery(): Builder
+    // {
+    //     $query = parent::getEloquentQuery();
 
-        // Verifica si el usuario logueado tiene el rol 'Super Admin'
-        if (!auth()->user()->hasRole('Super Admin')) {
-            // Excluye el usuario 'admin2' para usuarios que no sean Super Admin
-            $query->where('name', '!=', 'SuperAdmin');
-        }
+    //     // Verifica si el usuario logueado tiene el rol 'Super Admin'
+    //     if (!auth()->user()->hasRole('Super Admin')) {
+    //         // Excluye el usuario 'admin2' para usuarios que no sean Super Admin
+    //         $query->where('name', '!=', 'SuperAdmin');
+    //     }
 
-        return $query;
-    }
-    
+    //     return $query;
+    // }
+
 }

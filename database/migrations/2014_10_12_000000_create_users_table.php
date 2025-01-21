@@ -20,7 +20,7 @@ return new class extends Migration
             $table->boolean('send_notification')->default(true);
             $table->rememberToken();
             $table->timestamps();
-            $table->softDeletes(); // Adds 'deleted_at' column
+            // $table->softDeletes(); // Adds 'deleted_at' column
         });
     }
 
@@ -31,4 +31,12 @@ return new class extends Migration
     {
         Schema::dropIfExists('users');
     }
+
+    // Sirve como rollback
+    // public function down(): void
+    // {
+    //     Schema::table('users', function (Blueprint $table) {
+    //         $table->dropSoftDeletes(); // Removes 'deleted_at' column
+    //     });
+    // }
 };
