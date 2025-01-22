@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string(column: 'last_name',length: '30');
             $table->string(column: 'phone',length: '10');
             $table->string(column: 'email',length: '50');
-            $table->string(column: 'status',length: '15');
+            $table->boolean(column: 'status')->default(true);
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

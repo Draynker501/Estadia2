@@ -18,6 +18,10 @@ class Customer extends Model
         'user_id',
     ];
 
+    protected $casts = [
+        'status' => 'boolean', // Cast automático a booleano
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

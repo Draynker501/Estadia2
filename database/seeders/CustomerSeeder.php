@@ -25,13 +25,13 @@ class CustomerSeeder extends Seeder
         // Crear 25 clientes con status 'Activo' y asignar un user_id válido aleatoriamente
         Customer::factory(25)->create([
             'user_id' => $validUserIds->random(),
-            'status' => 'Activo',
+            'status' => true, // Activo (1)
         ]);
 
         // Crear 25 clientes con status 'Inactivo' y asignar un user_id válido aleatoriamente
         Customer::factory(25)->create([
             'user_id' => $validUserIds->random(),
-            'status' => 'Inactivo',
+            'status' => false, // Inactivo (0)
         ]);
     }
 }

@@ -45,12 +45,11 @@ class CustomerResource extends Resource
                     ->required()
                     ->unique(ignoreRecord: true)
                     ->maxLength(50),
-                Forms\Components\Select::make('status')
-                    ->options([
-                        'Activo' => 'Activo',
-                        'Inactivo' => 'Inactivo',
-                    ])
-                    ->native(false)
+                Forms\Components\Toggle::make('status') // Cambiar Select por Toggle
+                    ->label('Estado')
+                    ->onColor('success')
+                    ->offColor('danger')
+                    ->default(true) // 1 como valor predeterminado
                     ->required(),
             ]);
     }
@@ -75,7 +74,14 @@ class CustomerResource extends Resource
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
-                    ->searchable(),
+                    ->label('Estado')
+                    ->formatStateUsing(function ($state) {
+                        return $state ? 'Activo' : 'Inactivo';
+                    })
+                    ->colors([
+                        'success' => fn($state): bool => $state, // Verde para Activo
+                        'danger' => fn($state): bool => !$state, // Rojo para Inactivo
+                    ]),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

@@ -32,7 +32,7 @@ class CustomerFactory extends Factory
             'last_name' => substr($this->faker->lastName, 0, 30),
             'email' => substr($this->faker->unique()->safeEmail, 0, 50),
             'phone' => substr($this->faker->numerify('### ### ### ####'), 0, 15),
-            'status' => substr($this->faker->randomElement(['Activo', 'Inactivo']), 0, 15),
+            'status' => $this->faker->boolean(), // Generar booleano
             'user_id' => $this->faker->randomElement($validUserIds->toArray()), // Selecciona un ID válido aleatoriamente
         ];
 
