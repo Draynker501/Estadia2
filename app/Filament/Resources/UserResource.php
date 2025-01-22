@@ -6,8 +6,6 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
-use Filament\Forms\Components\CheckboxList;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
@@ -43,14 +41,9 @@ class UserResource extends Resource
                     ->dehydrated(fn($state) => filled($state))
                     ->required(fn(Page $livewire) => ($livewire instanceof CreateUser))
                     ->maxLength(255),
-                Select::make('roles')
+                Forms\Components\Select::make('roles')
                     ->relationship('roles', 'name')->preload()
                     ->required(),
-                CheckboxList::make('permissions')
-                    ->relationship('permissions', 'name')  // Asocia los permisos con el campo 'permissions' en el modelo
-                    ->required() // Si quieres que los permisos sean obligatorios
-                    ->columns(3) // Opcional, para mostrar los checkboxes en varias columnas
-                    ->default(fn($get) => $get('permissions') ?? []), // Establecer valores predeterminados si es necesario
                 Forms\Components\Checkbox::make('send_notification')
                     ->label('Mandar notificación al correo')
                     ->default(true) // Marcado por defecto

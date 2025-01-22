@@ -8,8 +8,6 @@ use App\Filament\Resources\RoleResource\RelationManagers;
 use App\Models\Role;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -31,12 +29,17 @@ class RoleResource extends Resource
         return $form
             ->schema([
                 Card::make()->schema([
-                    TextInput::make('name')
+                    Forms\Components\TextInput::make('name')
                         ->minLength(2)
                         ->maxLength(255)
                         ->required()
                         ->unique(ignoreRecord: true)
                         ->placeholder('Name'),
+                    Forms\Components\CheckboxList::make('permissions')
+                        ->relationship('permissions', 'name')  // Asocia los permisos con el campo 'permissions' en el modelo
+                        ->required() // Si quieres que los permisos sean obligatorios
+                        ->columns(3) // Opcional, para mostrar los checkboxes en varias columnas
+                        ->default(fn($get) => $get('permissions') ?? []), // Establecer valores predeterminados si es necesario
                 ])
             ]);
     }
