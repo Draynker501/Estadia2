@@ -8,24 +8,30 @@ use Illuminate\Database\Seeder;
 
 class CustomerSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // Obtener el primer usuario disponible
-        $userId = User::first()->id; // O puedes usar cualquier lógica para obtener un usuario específico
+        // Obtener los IDs de los usuarios válidos (sin rol 'Subscriptor' ni permiso 'Ninguno')
+        $validUserIds = User::whereDoesntHave('roles', function ($query) {
+            $query->where('name', 'Subscriptor');
+        })->whereDoesntHave('permissions', function ($query) {
+            $query->where('name', 'Ninguno');
+        })->pluck('id');
 
-        // Crear 25 clientes con status 'activo'
-        Customer::factory(25)->state([
-            'user_id' => $userId, // Asigna el ID de usuario obtenido
+        // Verificar que haya usuarios válidos
+        if ($validUserIds->isEmpty()) {
+            throw new \Exception('No hay usuarios válidos disponibles para asignar como user_id.');
+        }
+
+        // Crear 25 clientes con status 'Activo' y asignar un user_id válido aleatoriamente
+        Customer::factory(25)->create([
+            'user_id' => $validUserIds->random(),
             'status' => 'Activo',
-        ])->create();
+        ]);
 
-        // Crear 25 clientes con status 'inactivo'
-        Customer::factory(25)->state([
-            'user_id' => $userId, // Asigna el ID de usuario obtenido
+        // Crear 25 clientes con status 'Inactivo' y asignar un user_id válido aleatoriamente
+        Customer::factory(25)->create([
+            'user_id' => $validUserIds->random(),
             'status' => 'Inactivo',
-        ])->create();
+        ]);
     }
 }

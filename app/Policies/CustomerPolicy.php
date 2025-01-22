@@ -42,7 +42,7 @@ class CustomerPolicy
      */
     public function update(User $user, Customer $customer): bool
     {
-        if ($user->hasRole(roles: ['Super Admin', 'Administrador']) || $user->hasPermissionTo('Ver cliente')) {
+        if ($user->hasRole(roles: ['Super Admin', 'Administrador']) || $user->hasPermissionTo('Editar cliente')) {
             return true;
         }
         return false;    }

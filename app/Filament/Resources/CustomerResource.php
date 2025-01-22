@@ -96,18 +96,10 @@ class CustomerResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
-        // // Aquí es donde debes agregar el filtro de "autor"
-        // ->query(function (Builder $query) {
-        //     $user = auth()->user();
-        //     dd($user);
-        //     // Aplicar filtro solo si el usuario tiene el rol "autor"
-        //     if ($user->hasRole('Autor')) {
-        //         $query->where('user_id', '=', $user->id);
-        //     }
-
-        //     return $query;
-        // });
+            ])
+            ->query(function (Builder $query) {
+                return Customer::query()->filterByAuthor();
+            });
     }
 
     //Define las relaciones de customers (No fueron necesarias en este caso)

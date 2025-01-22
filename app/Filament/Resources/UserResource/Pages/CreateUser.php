@@ -17,19 +17,6 @@ class CreateUser extends CreateRecord
         return $this->getResource()::getUrl('index');
     }
 
-    // Personaliza la acción de crear para mostrar un modal de confirmación
-    // protected function getCreateFormAction(): Actions\Action
-    // {
-    //     return parent::getCreateFormAction()
-    //         ->submit(form: null)
-    //         ->requiresConfirmation()
-    //         ->action(function () {
-    //             $this->closeActionModal();
-    //             $this->create();
-    //         });
-
-    // }
-
     // Envía la notificación después de crear un usuario
     protected function afterCreate(): void
     {

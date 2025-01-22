@@ -33,4 +33,16 @@ class Customer extends Model
             }
         });
     }
+
+    public function scopeFilterByAuthor($query)
+    {
+        $user = auth()->user();
+
+        // Aplica el filtro solo si hay un usuario autenticado y tiene el rol "Autor"
+        if ($user && $user->hasRole('Autor')) {
+            return $query->where('user_id', $user->id);
+        }
+
+        return $query;
+    }
 }
