@@ -41,7 +41,8 @@ class UserResource extends Resource
                     ->dehydrateStateUsing(fn($state) => Hash::make($state))
                     ->dehydrated(fn($state) => filled($state))
                     ->required(fn(Page $livewire) => ($livewire instanceof CreateUser))
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->revealable(),
                 Forms\Components\Select::make('roles')
                     ->relationship('roles', 'name')->preload()
                     ->required(),
