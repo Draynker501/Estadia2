@@ -16,14 +16,18 @@ class CustomerPolicy
         if ($user->hasRole(roles: ['Super Admin', 'Administrador']) || $user->hasPermissionTo('Ver cliente')) {
             return true;
         }
-        return false;    }
+        return false;
+    }
 
     /**
      * Determine whether the user can view the model.
      */
     public function view(User $user, Customer $customer): bool
     {
-        //
+        if ($user->hasRole(roles: ['Super Admin', 'Administrador']) || $user->hasPermissionTo('Ver cliente')) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -45,7 +49,8 @@ class CustomerPolicy
         if ($user->hasRole(roles: ['Super Admin', 'Administrador']) || $user->hasPermissionTo('Editar cliente')) {
             return true;
         }
-        return false;    }
+        return false;
+    }
 
     /**
      * Determine whether the user can delete the model.
