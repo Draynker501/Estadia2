@@ -1,113 +1,237 @@
-PASOS PARA DEJAR FUNCIONANDO EL PROYECTO
+# Pasos para dejar funcionando el proyecto
 
-1.- Crear proyecto de laravel en laragon, de preferencia que sea la versión 10 para evitar posibles incompatibilidades.
+## Requisitos previos
 
-2.- Instalar filament con el siguiente comando: composer require filament/filament -W.
+- Tener instalado **Laragon** o un entorno de desarrollo similar.
+- PHP 8.1 o superior.
+- Composer instalado.
 
-3.- Instalar paneles con el siguiente comando: php artisan filament:install --panels.
+---
 
-4.- Crear modelos Customer, Role y Permission.
+## Instrucciones
 
-5.- Crear y modificar migración para Customer, debe tener atributos: user_id (clave foranea), name, last_name, phone, email y status. También, agregar atributo send_notification (boolean) a migración de users
+### 1. Crear proyecto Laravel
 
-6.- Cambiar nombre de la base de datos en .env y ejecutar migración con el comando: php artisan migrate.
+```bash
+laravel new nombre-del-proyecto --version=10
+```
 
-7.- Crear un usuario administrador con el comando: php artisan make:filament-user.
+### 2. Instalar Filament
 
-8.- Agregar método "passwordReset()" en el archivo "AdminPanelProvides.php" para agregar la opción de recuperar contraseña.
+```bash
+composer require filament/filament -W
+```
 
-9.- Configurar lo referente a MAIL en .env para que la herramienta de prueba de correo electronico funcione correctamente.
+### 3. Instalar paneles
 
-10.- Generar CRUD's de los modelos con el comando: php artisan make:filament-resource nombre-del-modelo --generate.
+```bash
+php artisan filament:install --panels
+```
 
-11.- Instalar paquete spatie con el comando: composer require spatie/laravel-permission
+### 4. Crear modelos
 
-12.- Publicar la migración y el archivo de configuración config/permission.php con: php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+Crear los modelos `Customer`, `Role` y `Permission`.
 
-13.- Agregar trait "HasRoles" al modelo User
+### 5. Crear y modificar migraciones
 
-14.- Implementar implementar interfaz FilamentUser en el modelo User para después agregar el siguiente método:
+- Para el modelo `Customer`, agregar los siguientes atributos:
+  - `user_id` (clave foránea)
+  - `name`
+  - `last_name`
+  - `phone`
+  - `email`
+  - `status`
+- Agregar el atributo `send_notification` (boolean) a la migración de `users`.
 
+### 6. Configurar base de datos
+
+Cambiar el nombre de la base de datos en el archivo `.env` y ejecutar las migraciones:
+
+```bash
+php artisan migrate
+```
+
+### 7. Crear usuario administrador
+
+```bash
+php artisan make:filament-user
+```
+
+### 8. Agregar método para recuperación de contraseña
+
+En el archivo `AdminPanelProvides.php`, agregar el método `passwordReset()` para habilitar la opción de recuperación de contraseña.
+
+### 9. Configurar correo electrónico
+
+Configurar los valores relacionados con MAIL en el archivo `.env`.
+
+### 10. Generar CRUDs
+
+```bash
+php artisan make:filament-resource nombre-del-modelo --generate
+```
+
+### 11. Instalar paquete Spatie
+
+```bash
+composer require spatie/laravel-permission
+```
+
+### 12. Publicar migraciones y configuración
+
+```bash
+php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+```
+
+### 13. Agregar trait al modelo User
+
+Agregar el trait `HasRoles` al modelo `User`.
+
+### 14. Implementar interfaz FilamentUser en User
+
+En el modelo `User`, implementar la interfaz `FilamentUser` y agregar el siguiente método:
+
+```php
 public function canAccessPanel(Panel $panel): bool
-    {
-        return $this->hasRole(['Super Admin','Administrador','Editor','Autor','Colaborador','Subscriptor']);
-    }
+{
+    return $this->hasRole(['Super Admin', 'Administrador', 'Editor', 'Autor', 'Colaborador', 'Subscriptor']);
+}
+```
 
-15.- Modificar el archivo UserResource.php para que haga uso de los registros de Role y Permission, que servirán para limitar sus acciones, además de agregar checkbox para send_notification
+### 15. Modificar UserResource.php
 
-16.- Crear Policies para cada CRUD con el comando: php artisan make:policy nombre-del-modelo-Policy (ej. UserPolicy) --model=nombre-del-modelo
+Modificar el archivo `UserResource.php` para que utilice los registros de `Role` y `Permission`. También, agregar un checkbox para el atributo `send_notification`.
 
-17.- Modificar los métodos dentro de los policies creados para limitar el acceso a los CRUD en base a los roles y permisos, ejemplo:
+### 16. Crear Policies
 
+```bash
+php artisan make:policy nombre-del-modelo-Policy --model=nombre-del-modelo
+```
+Ejemplo:
+```bash
+php artisan make:policy UserPolicy --model=User
+```
+
+### 17. Configurar métodos en Policies
+
+Ejemplo para limitar acceso:
+
+```php
 public function create(User $user): bool
-    {
-        if ($user->hasRole(roles: ['Super Admin', 'Administrador']) || $user->hasPermissionTo('Crear cliente')) {
-            return true;
-        }
-        return false;
-    }
+{
+    return $user->hasRole(['Super Admin', 'Administrador']) || $user->hasPermissionTo('Crear cliente');
+}
+```
 
-18.- Especificar que politica se le aplica a cada modelo en el archivo AuthServiceProvider:
+### 18. Registrar políticas en AuthServiceProvider
+
+En el archivo `AuthServiceProvider.php`, agregar:
+
+```php
 protected $policies = [
-        User::class => UserPolicy::class,
-        Role::class => RolePolicy::class,
-        Customer::class => CustomerPolicy::class,
-        Permission::class => PermissionPolicy::class,
-    ];
+    User::class => UserPolicy::class,
+    Role::class => RolePolicy::class,
+    Customer::class => CustomerPolicy::class,
+    Permission::class => PermissionPolicy::class,
+];
+```
 
-19.- Crear notificaciones para la creación, edición y eliminación de usuario con el comando:
-php artisan make:notification nombre-del-modelo-accion-Notification (ejemplo:UserDeletedNotification)
+### 19. Crear notificaciones
 
-20.- Modificar mensaje según la notificación
+```bash
+php artisan make:notification nombre-del-modelo-accion-Notification
+```
+Ejemplo:
+```bash
+php artisan make:notification UserDeletedNotification
+```
 
-21.- Agregar notificaciones a sus acciones:
-    21.1.- En el archivo CreateUser.php, agregar método que contiene Notificación de usuario creado:
-    protected function afterCreate(): void
-    {
-        if ($this->record->send_notification) {
-            $this->record->notify(new WelcomeUserNotification());
+### 20. Modificar mensajes de notificaciones
+
+Personalizar el contenido de cada notificación según sea necesario.
+
+### 21. Agregar notificaciones a acciones
+
+#### 21.1 En `CreateUser.php`
+
+```php
+protected function afterCreate(): void
+{
+    if ($this->record->send_notification) {
+        $this->record->notify(new WelcomeUserNotification());
+    }
+}
+```
+
+#### 21.2 En `EditUser.php`
+
+```php
+protected function afterSave(): void
+{
+    if ($this->record->send_notification) {
+        $this->record->notify(new UserUpdatedNotification());
+    }
+}
+```
+
+#### 21.3 En el modelo User
+
+```php
+protected static function boot()
+{
+    parent::boot();
+
+    static::deleting(function ($user) {
+        if ($user->send_notification) {
+            $user->notify(new UserDeletedNotification());
         }
-    }
+    });
+}
+```
 
-    21.2.- En el archivo EditUser.php, agregar método que contiene Notificación de usuario actualizado:
-    protected function afterSave(): void
-    {
-        if ($this->record->send_notification) {
-            $this->record->notify(new UserUpdatedNotification());
-        }
-    }
+### 22. Modal de confirmación para actualizar registros
 
-    21.3.- En el modelo User, agregar método que contiene Notificación de usuario eliminado:
-    protected static function boot()
-    {
-        parent::boot();
+Agregar el siguiente método en todos los CRUDs:
 
-        static::deleting(function ($user) {
-            if ($user->send_notification) {
-                $user->notify(new UserDeletedNotification());
-            }
-        });
-    }
-
-22.- Agregar modal de confirmación para actualizar un registro (todos los CRUD):
+```php
 protected function getSaveFormAction(): Actions\Action
-    {
-        return parent::getSaveFormAction()
-            ->submit(form: null)
-            ->requiresConfirmation()
-            ->action(function () {
-                $this->closeActionModal();
-                $this->save();
-            });
-    }
+{
+    return parent::getSaveFormAction()
+        ->submit(form: null)
+        ->requiresConfirmation()
+        ->action(function () {
+            $this->closeActionModal();
+            $this->save();
+        });
+}
+```
 
-23.- Crear factories y seeders para users y customers:
-php artisan make:factorie nombre-del-modelo --model=nombre-del-modelo 
-php artisan make:seeder nombre-del-modelo-Seeder (ejemplo: UserSeeder)
+### 23. Crear factories y seeders
 
-24.- Configurar los factories de users y customers para establecer las reglas que deben seguir los registros
+```bash
+php artisan make:factory nombre-del-modelo --model=nombre-del-modelo
+php artisan make:seeder nombre-del-modelo-Seeder
+```
+Ejemplo:
+```bash
+php artisan make:factory UserFactory --model=User
+php artisan make:seeder UserSeeder
+```
 
-25.- Connfigurar los seeders
-    25.1.- users para que cree 10 usuarios colaboradores, 5 con email_verified_at y 5 sin email_verified_at.
-    25.2.- customer para que cree 50 clientes, 25 con status Activo y 25 con status Inactivo.
+### 24. Configurar factories
 
+Configurar reglas para los registros en los factories de `users` y `customers`.
+
+### 25. Configurar seeders
+
+#### 25.1 Seeder de `users`
+
+Crear 10 usuarios colaboradores:
+- 5 con `email_verified_at`.
+- 5 sin `email_verified_at`.
+
+#### 25.2 Seeder de `customers`
+
+Crear 50 clientes:
+- 25 con `status` Activo.
+- 25 con `status` Inactivo.
