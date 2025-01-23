@@ -30,6 +30,18 @@ class User extends Authenticatable implements FilamentUser
         'send_notification',
     ];
 
+    // Relación con los roles (muchos a muchos)
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'user_roles');
+    }
+
+    // Relación con los clientes (uno a muchos)
+    public function customers()
+    {
+        return $this->hasMany(Customer::class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
