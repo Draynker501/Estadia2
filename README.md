@@ -3,7 +3,7 @@
 ## Requisitos previos
 
 - Tener instalado **Laragon** o un entorno de desarrollo similar.
-- PHP 8.1 o superior.
+- PHP 8.3.
 - Composer instalado.
 
 ---
@@ -13,7 +13,7 @@
 ### 1. Crear proyecto Laravel
 
 ```bash
-laravel new nombre-del-proyecto --version=10
+composer create-project laravel/laravel nombre-del-proyecto "10.*"
 ```
 
 ### 2. Instalar Filament
@@ -63,7 +63,7 @@ En el archivo `AdminPanelProvides.php`, agregar el método `passwordReset()` par
 
 ### 9. Configurar correo electrónico
 
-Configurar los valores relacionados con MAIL en el archivo `.env`.
+Configurar los valores relacionados con MAIL en el archivo `.env` conforme a puertos y host usados por la herramienta de pruebas de correos.
 
 ### 10. Generar CRUDs
 
@@ -82,6 +82,10 @@ composer require spatie/laravel-permission
 ```bash
 php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
 ```
+
+
+13.- Conectar proyecto con repositorio de github
+
 
 ### 13. Agregar trait al modelo User
 
