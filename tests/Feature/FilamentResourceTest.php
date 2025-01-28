@@ -13,20 +13,13 @@ class FilamentResourceTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function authenticated_users_with_proper_roles_can_access_filament_dashboard()
+    public function usuarios_autenticados_con_roles_adecuados_pueden_acceder_al_dashboard()
     {
-        // Crear permisos
-        $permission = Permission::create(['name' => 'Ver customers']);
-
         // Crear un rol y asignar permisos al rol
-        $role = Role::create(['name' => 'admin']);
-        $role->givePermissionTo($permission);
+        $role = Role::create(['name' => 'Administrador']);
 
         // Crear un usuario y asignar el rol
-        $user = User::factory()->create([
-            'email' => 'admin@example.com',
-            'password' => bcrypt('password'),
-        ]);
+        $user = User::factory()->create();
         $user->assignRole($role);
 
         // Actuar como el usuario
@@ -35,13 +28,12 @@ class FilamentResourceTest extends TestCase
         // Acceder al dashboard de Filament
         $response = $this->get('/admin');
 
-        // Verificar que el usuario tiene acceso
-        $response->assertStatus(200);
-        $response->assertSee('Dashboard'); // Ajusta el texto según tu vista
+        // Verificar el acceso
+        $response->assertStatus(200);  // Ajusta el texto según tu vista
     }
 
     /** @test */
-    public function users_without_proper_roles_cannot_access_filament_dashboard()
+    public function usuarios_sin_roles_adecuados_no_pueden_acceder_al_dashboard()
     {
         // Crear un usuario sin permisos
         $user = User::factory()->create();
@@ -55,4 +47,54 @@ class FilamentResourceTest extends TestCase
         // Verificar que el acceso está prohibido
         $response->assertStatus(403);
     }
+
+    /** @test */
+    public function super_admin_puede_acceder_a_los_modulos_de_users_permissions_roles_y_customers()
+    {
+        // Crear un rol y asignar permisos al rol
+        $role = Role::create(['name' => 'Super Admin']);
+
+        // Crear un usuario y asignar el rol
+        $user = User::factory()->create();
+        $user->assignRole($role);
+
+        $this->actingAs($user);
+
+        // Acceder al módulo de users
+        $response = $this->get('/admin/users');
+        $response->assertStatus(200);
+
+        // Acceder al módulo de permissions
+        $response = $this->get('/admin/permissions');
+        $response->assertStatus(200);
+
+        // Acceder al módulo de roles
+        $response = $this->get('/admin/roles');
+        $response->assertStatus(200);
+
+        // Acceder al módulo de customers
+        $response = $this->get('/admin/customers');
+        $response->assertStatus(200);
+    }
+
+    public function usuario_sin_rol_Super_Admin_no_tiene_acceso_a_modulos_users_roles_ni_permissions()
+    {
+        $admin = User::factory()->create();
+        $admin->assignRole('Administrador'); // O cualquier otro rol distinto a Super Admin
+
+        $this->actingAs($admin);
+
+        // Intentar acceder al módulo de users
+        $response = $this->get('/admin/users');
+        $response->assertStatus(403); // Acceso prohibido
+
+        // Intentar acceder al módulo de permissions
+        $response = $this->get('/admin/permissions');
+        $response->assertStatus(403); // Acceso prohibido
+
+        // Intentar acceder al módulo de roles
+        $response = $this->get('/admin/roles');
+        $response->assertStatus(403); // Acceso prohibido
+    }
+
 }

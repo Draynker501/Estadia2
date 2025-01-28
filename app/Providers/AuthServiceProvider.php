@@ -11,6 +11,7 @@ use App\Policies\UserPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\CustomerPolicy;
 use App\Policies\PermissionPolicy;
+use Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -32,6 +33,11 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->registerPolicies();
+
+        // Definir el Gate para Filament
+        Gate::define('access-filament', function (User $user) {
+            return $user->hasRole('Super Admin') || $user->hasRole('Administrador');
+        });
     }
 }
