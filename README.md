@@ -17,7 +17,7 @@ Sigue estos pasos para dejar funcionando el proyecto:
 Abre la terminal en la ruta `C:\laragon\www` y ejecuta el siguiente comando para clonar el repositorio:
 
 ```bash
-git clone https://github.com/Darynker501/Estadia2.git
+git clone https://github.com/Draynker501/Estadia2.git
 ```
 
 ### 2. Navegar al directorio del proyecto
