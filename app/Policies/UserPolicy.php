@@ -14,7 +14,7 @@ class UserPolicy
     // La funcion viewAny permite ver todo a los usuarios que tengan los roles especificados
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(roles: ['Super Admin', 'Administrador']);
+        return $user->hasRole(roles: ['Super Admin']);
     }
 
     /**
@@ -22,7 +22,7 @@ class UserPolicy
      */
     public function view(User $user, User $model): bool
     {
-        return $user->hasRole(['Super Admin','Administrador']);
+        return $user->hasRole(['Super Admin']);
     }
 
     /**
@@ -32,7 +32,7 @@ class UserPolicy
     // La funcion create permite crear a los usuarios que tengan los roles especificados
     public function create(User $user): bool
     {
-        return $user->hasRole(['Super Admin','Administrador']);
+        return $user->hasRole(['Super Admin']);
     }
 
     /**
@@ -42,7 +42,7 @@ class UserPolicy
      // La funcion update permite actualizar a los usuarios que tengan los roles especificados
     public function update(User $user): bool
     {
-        return $user->hasRole(['Super Admin','Administrador']);
+        return $user->hasRole(['Super Admin']);
     }
 
     /**
@@ -52,7 +52,7 @@ class UserPolicy
      // La funcion delete permite eliminar a los usuarios que tengan los roles especificados
     public function delete(User $user): bool
     {
-        return $user->hasRole(['Super Admin','Administrador']);
+        return $user->hasRole(['Super Admin']);
     }
 
     /**
@@ -60,7 +60,7 @@ class UserPolicy
      */
     public function restore(User $user, User $model): bool
     {
-        return $user->hasRole(['Super Admin','Administrador']);
+        return $user->hasRole(['Super Admin']);
     }
 
     /**
@@ -68,6 +68,6 @@ class UserPolicy
      */
     public function forceDelete(User $user, User $model): bool
     {
-        return $user->hasRole(['Super Admin','Administrador']);
+        return $user->hasRole(['Super Admin']);
     }
 }

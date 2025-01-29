@@ -4,9 +4,10 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Customer;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
 
 class FilamentResourceTest extends TestCase
 {
@@ -51,14 +52,14 @@ class FilamentResourceTest extends TestCase
     /** @test */
     public function super_admin_puede_acceder_a_los_modulos_de_users_permissions_roles_y_customers()
     {
-        // Crear un rol y asignar permisos al rol
+        // Crear un rol
         $role = Role::create(['name' => 'Super Admin']);
 
         // Crear un usuario y asignar el rol
         $user = User::factory()->create();
         $user->assignRole($role);
 
-        $this->actingAs($user);
+        $this->actingAs(user: $user);
 
         // Acceder al módulo de users
         $response = $this->get('/admin/users');
@@ -77,12 +78,17 @@ class FilamentResourceTest extends TestCase
         $response->assertStatus(200);
     }
 
+    /** @test */
     public function usuario_sin_rol_Super_Admin_no_tiene_acceso_a_modulos_users_roles_ni_permissions()
     {
-        $admin = User::factory()->create();
-        $admin->assignRole('Administrador'); // O cualquier otro rol distinto a Super Admin
+        // Crear un rol
+        $role = Role::create(['name' => 'Administrador']);
 
-        $this->actingAs($admin);
+        // Crear un usuario y asignar el rol
+        $user = User::factory()->create();
+        $user->assignRole($role);
+
+        $this->actingAs(user: $user);
 
         // Intentar acceder al módulo de users
         $response = $this->get('/admin/users');
@@ -93,8 +99,65 @@ class FilamentResourceTest extends TestCase
         $response->assertStatus(403); // Acceso prohibido
 
         // Intentar acceder al módulo de roles
-        $response = $this->get('/admin/roles');
+        $response = $this->get(uri: '/admin/roles');
         $response->assertStatus(403); // Acceso prohibido
+    }
+
+    /** @test */
+    public function administrador_puede_administrar_customers()
+    {
+        $role = Role::create(['name' => 'Administrador']);
+
+        // Crear un usuario y asignar el rol
+        $user = User::factory()->create();
+        $user->assignRole($role);
+
+        $this->actingAs(user: $user);
+
+        // Ver formulacio de creación de customer
+        $response = $this->get(uri: '/admin/customers/create');
+        $response->assertStatus(200);
+
+        $this->post('/admin/customers', [
+            'name' => 'Cliente de prueba',
+            'email' => 'cliente@ejemplo.com',
+        ])
+        ->assertRedirect('/admin/customers');
+        
+        $this->assertDatabaseHas('customers', [
+            'name' => 'Cliente de prueba',
+            'email' => 'cliente@ejemplo.com',
+        ]);
+        // // Crear un customer
+        // $response = $this->post('/livewire/update/', [
+        //     'name' => 'Cliente de prueba',
+        //     'email' => 'cliente@ejemplo.com',
+        //     'user_id' => $user->id
+        // ]);
+        // $response->assertStatus(200); // Cliente creado exitosamente
+
+
+        // // Obtener el ID del customer creado de la respuesta
+        // $customerId = $response->json('id');  // Ajusta esto si el ID está en un lugar diferente
+
+        // // Ver customer
+        // $response = $this->get("/admin/customers/{$customerId}"); // Usar el ID dinámicamente
+        // $response->assertStatus(200);
+
+        // // Formulario de edición de customer
+        // $response = $this->get(uri: "/admin/customers/{$customerId}/edit");
+        // $response->assertStatus(200);
+
+        // // Editar customer
+        // $response = $this->post("/livewire/update/", [
+        //     'name' => 'Cliente Editado',
+        //     'email' => 'clienteeditado@ejemplo.com'
+        // ]);
+        // $response->assertStatus(200);
+
+        // // Eliminar customer
+        // $response = $this->delete("/admin/customers/{$customerId}");
+        // $response->assertStatus(200);
     }
 
 }
