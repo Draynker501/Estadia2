@@ -63,3 +63,11 @@ Inserta datos en la base de datos ejecutando el siguiente comando
 ```bash
 php artisan db:seed
 ```
+
+### 8. Probar proyecto
+
+Luego de ejecutar los seeders, se puede probar el proyecto con el navegador o utilizando los test para ver que todo funciona correctamente
+
+```bash
+php artisan test
+```
