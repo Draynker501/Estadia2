@@ -13,7 +13,6 @@ class CustomersTest extends TestCase
 {
     use RefreshDatabase;
 
-
     /** @test */
     public function administrador_puede_crear_customers()
     {
