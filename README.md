@@ -48,6 +48,18 @@ Ejecuta el siguiente comando para contar con una clave de aplicación única y s
 php artisan key:generate
 ```
 
-### 6. Importar arhivo sql
+### 6. Ejecutar migraciones 
 
-Descarga e importa el archivo sql adjunto para obtener la base de datos
+Ejecuta las migraciones para obtener la base de datos del proyecto
+
+```bash
+php artisan migrate
+```
+
+### 7. Ejecuta los seeders
+
+Inserta datos en la base de datos ejecutando el siguiente comando
+
+```bash
+php artisan db:seed
+```

@@ -29,7 +29,7 @@ class RolePermissionSeeder extends Seeder
 
         // Lista de roles
         $roles = [
-            'Super Admin' => $permissions, // Le damos todos los permisos
+            'Super Admin' => ['Crear cliente', 'Editar cliente', 'Ver cliente', 'Eliminar cliente'],
             'Administrador' => ['Crear cliente', 'Editar cliente', 'Ver cliente', 'Eliminar cliente'],
             'Editor' => ['Editar cliente', 'Ver cliente', 'Crear cliente'],
             'Autor' => ['Editar cliente', 'Ver cliente', 'Crear cliente'],
