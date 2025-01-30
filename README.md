@@ -71,3 +71,8 @@ Luego de ejecutar los seeders, se puede probar el proyecto con el navegador o ut
 ```bash
 php artisan test
 ```
+
+Para acceder como Super Admin, las credenciales son las siguientes:
+
+- **Email**: superadmin@gmail.com
+- **Password**: superadmin@gmail.com

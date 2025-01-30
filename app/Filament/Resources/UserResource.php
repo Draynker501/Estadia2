@@ -35,7 +35,7 @@ class UserResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\DateTimePicker::make('email_verified_at')
-                ->default(now()),
+                    ->default(now()),
                 Forms\Components\TextInput::make('password')
                     ->password()
                     ->dehydrateStateUsing(fn($state) => Hash::make($state))
@@ -64,7 +64,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()
                     ->sortable()
-                    ->formatStateUsing(fn ($state) => $state ? $state->format('d/m/Y H:i') : null),
+                    ->formatStateUsing(fn($state) => $state ? $state->format('d/m/Y H:i') : null),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -110,13 +110,8 @@ class UserResource extends Resource
     {
         $query = parent::getEloquentQuery();
 
-        // Verifica si el usuario logueado tiene el rol 'Super Admin'
-        if (!auth()->user()->hasRole('Super Admin')) {
-            // Excluye a los usuarios que tengan el rol 'Super Admin'
-            $query->whereDoesntHave('roles', function ($query) {
-                $query->where('name', 'Super Admin');
-            });
-        }
+        // Excluye al usuario autenticado de la lista
+        $query->where('id', '!=', auth()->user()->id);
 
         return $query;
     }
