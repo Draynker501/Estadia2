@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use SebastianBergmann\CodeCoverage\Report\Xml\Project;
 
 class Customer extends Model
 {
@@ -48,5 +49,9 @@ class Customer extends Model
         }
 
         return $query;
+    }
+
+    public function projects(){
+        return $this->belongsToMany(Project::class,'customer_projects');
     }
 }
