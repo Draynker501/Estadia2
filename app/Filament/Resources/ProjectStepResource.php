@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProjectStepResource\Pages;
 use App\Filament\Resources\ProjectStepResource\RelationManagers;
-use App\Models\ProjectStep;
+use App\Models\ProjectSteps;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProjectStepResource extends Resource
 {
-    protected static ?string $model = ProjectStep::class;
+    protected static ?string $model = ProjectSteps::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

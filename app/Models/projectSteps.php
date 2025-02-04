@@ -11,6 +11,8 @@ class projectSteps extends Model
 
     protected $fillable = ['project_id', 'name', 'order', 'completed'];
 
+    public $timestamps = false;
+
     public function project()
     {
         return $this->belongsTo(Project::class);
