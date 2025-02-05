@@ -24,17 +24,16 @@ class ProjectResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')->required()->maxLength(150),
-                Forms\Components\Textarea::make('description')->required(),
                 Forms\Components\Select::make('customers')
                 ->relationship('customers', 'name') // Relación con el modelo Customer
                 ->multiple() // Permite seleccionar varios clientes
                 ->preload() // Carga los datos al iniciar el formulario
                 ->required(),
+                Forms\Components\Textarea::make('description')->required(),
                 Forms\Components\Repeater::make('steps')
                 ->relationship('steps') // Relación con ProjectStep
                 ->schema([
                     Forms\Components\TextInput::make('name')->required()->maxLength(50),
-                    Forms\Components\TextInput::make('order')->numeric()->required(),
                     // Forms\Components\Toggle::make('completed')->default(false),
                 ])
                 ->minItems(1) // Mínimo 1 paso requerido
