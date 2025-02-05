@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('checklist_id');
             $table->unsignedBigInteger('project_step_id');
+            $table->boolean('checked')->default(false);
 
             $table->foreign('checklist_id')->references('id')->on('checklists');
             $table->foreign('project_step_id')->references('id')->on('project_steps');        
