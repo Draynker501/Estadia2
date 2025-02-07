@@ -9,7 +9,7 @@ class Checklist extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['task', 'orden'];
+    protected $fillable = ['task'];
 
     public $timestamps = false;
 

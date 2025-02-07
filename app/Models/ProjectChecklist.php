@@ -11,7 +11,11 @@ class ProjectChecklist extends Model
 
     protected $table = 'project_checklist';
 
-    protected $fillable = ['project_id', 'checklist_id'];
+    protected $fillable = ['project_id', 'checklist_id','orden','completed'];
+
+    protected $casts = [
+        'required' => 'boolean',
+    ];
 
     public $timestamps = false;
 }
