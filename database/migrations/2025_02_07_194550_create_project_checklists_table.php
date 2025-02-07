@@ -4,20 +4,19 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('customer_projects', function (Blueprint $table) {
+        Schema::create('project_checklists', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger(column: 'customer_id');
             $table->unsignedBigInteger(column: 'project_id');
+            $table->unsignedBigInteger(column: 'checklist_id');
 
-            $table->foreign('customer_id')->references('id')->on('customers');
-            $table->foreign('project_id')->references('id')->on('projects');
+            $table->foreign(columns: 'project_id')->references('id')->on('projects');
+            $table->foreign('checklist_id')->references('id')->on('checklists');
         });
     }
 
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customer_projects');
+        Schema::dropIfExists('project_checklists');
     }
 };

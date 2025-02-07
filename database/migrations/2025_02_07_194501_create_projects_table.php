@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->string('name','150');
+            $table->unsignedBigInteger(column: 'customer_id');
+            $table->string('name', '150');
             $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('customer_id')->references('id')->on('customers');
         });
     }
 

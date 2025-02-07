@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('checklists', function (Blueprint $table) {
             $table->id();
             $table->string('task', 100);
-
+            $table->integer('orden');
             $table->softDeletes();
         });
     }
