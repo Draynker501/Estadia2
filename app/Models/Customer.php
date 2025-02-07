@@ -51,7 +51,8 @@ class Customer extends Model
         return $query;
     }
 
-    public function projects(){
-        return $this->belongsToMany(Project::class,'customer_projects');
+    public function project()
+    {
+        return $this->hasOne(Project::class);
     }
 }
