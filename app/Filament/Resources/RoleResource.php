@@ -24,6 +24,11 @@ class RoleResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Configuración';
+    }
+
     public static function form(Form $form): Form
     {
         return $form

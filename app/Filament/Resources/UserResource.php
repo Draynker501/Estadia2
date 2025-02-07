@@ -21,6 +21,11 @@ class UserResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?int $navigationSort = 1;
 
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Configuración';
+    }
+
     //Hace referencia al formulario de user (create y editar)
     public static function form(Form $form): Form
     {
