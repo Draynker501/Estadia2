@@ -26,6 +26,18 @@ class ChecklistResource extends Resource
                 Forms\Components\TextInput::make('task')
                     ->required()
                     ->maxLength(100),
+                Forms\Components\Repeater::make('check')
+                    ->relationship('checks') // Relación con ProjectStep
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(150),
+                        Forms\Components\Toggle::make('required')
+                            ->default(false)
+                            ->required()
+                    ])
+                    ->minItems(1) // Mínimo 1 paso requerido
+                    ->collapsible(),
             ]);
     }
 

@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ProjectResource\Pages;
 use App\Filament\Resources\ProjectResource\RelationManagers;
 use App\Models\Project;
+use Filament\Actions\DeleteAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -25,9 +26,25 @@ class ProjectResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->maxLength(150),
-                Forms\Components\Select::make('customers')
-                    ->relationship('customers', 'name') // Relación con el modelo Customer
+                    ->maxLength(150)
+                    ->rules([
+                        function ($get) {
+                            return function (string $attribute, $value, $fail) use ($get) {
+                                $customerId = $get('customer_id');
+                                $projectId = $get('id');
+                                $exists = Project::where('customer_id', $customerId)
+                                    ->where('name', $value)
+                                    ->where('id', '!=', $projectId)
+                                    ->exists();
+
+                                if ($exists) {
+                                    $fail('Ya existe un proyecto con este nombre para el cliente seleccionado.');
+                                }
+                            };
+                        },
+                    ]),
+                Forms\Components\Select::make('customer_id')
+                    ->relationship('customer', 'name') // Relación con el modelo Customer
                     ->required(),
                 Forms\Components\RichEditor::make('description') //RichEditor permite dar formato al texto
                     ->required()
@@ -37,12 +54,19 @@ class ProjectResource extends Resource
                         'underline', // Botón de subrayado
                         'strike', // Botón de tachado
                     ]),
-                Forms\Components\Repeater::make('checklist')
-                    ->relationship('checklist') // Relación con ProjectStep
+                Forms\Components\Repeater::make('projectChecklists')
+                    ->relationship('projectChecklists')
                     ->schema([
-                        Forms\Components\TextInput::make('name')->required()->maxLength(50),
-                    ])
-                    ->minItems(1) // Mínimo 1 paso requerido
+                        Forms\Components\Select::make('checklist_id') // El campo select para elegir un checklist
+                            ->relationship('checklist', 'task') // Relación con el modelo Checklist
+                            ->required()
+                            ->label('Task')
+                            ->placeholder('Select a task'),
+                        ])
+                    ->orderable(column: 'orden') // Habilitar la funcionalidad de ordenamiento en el repeater
+                    ->defaultItems(1) // Número de items por defecto en el repeater
+                    // ->createItemButtonLabel('Add Task') // Texto del botón para agregar un nuevo item
+                    ->minItems(1) // Mínimo de items requeridos
                     ->collapsible(), // Permite colapsar los pasos para mejor visualización
             ]);
     }
@@ -51,11 +75,12 @@ class ProjectResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('customer_id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('customer.name')
+                    ->label('Customer')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -74,6 +99,7 @@ class ProjectResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

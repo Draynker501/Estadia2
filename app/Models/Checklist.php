@@ -13,9 +13,9 @@ class Checklist extends Model
 
     public $timestamps = false;
 
-    public function project()
+    public function projects()
     {
-        return $this->belongsToMany(Project::class, 'project_checklist', 'checklist_id', 'project_id');
+        return $this->belongsToMany(Project::class, 'project_checklists', 'checklist_id', 'project_id');
     }
 
     public function checks()

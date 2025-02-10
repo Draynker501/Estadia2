@@ -9,15 +9,21 @@ class Project extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description','customer_id'];
+    protected $fillable = ['customer_id', 'name', 'description'];
 
     public function customer()
     {
         return $this->belongsTo(Customer::class);
     }
 
-    public function checklist()
+    public function checklists()
     {
-        return $this->belongsToMany(Checklist::class, 'project_checklist');
+        return $this->hasMany(Checklist::class);
     }
+
+    public function projectChecklists()
+    {
+        return $this->hasMany(ProjectChecklist::class);
+    }
+
 }
