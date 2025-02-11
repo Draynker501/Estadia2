@@ -22,4 +22,9 @@ class Checklist extends Model
     {
         return $this->hasMany(Check::class);
     }
+
+    public function notes()
+    {
+        return $this->morphMany(Note::class, 'notable');
+    }
 }

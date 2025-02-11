@@ -19,6 +19,13 @@ class ChecklistResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?int $navigationSort = 3;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Administración';
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -38,6 +45,15 @@ class ChecklistResource extends Resource
                     ])
                     ->minItems(1) // Mínimo 1 paso requerido
                     ->collapsible(),
+                Forms\Components\Repeater::make('notes')
+                    ->relationship('notes')
+                    ->schema([
+                        Forms\Components\Textarea::make('content')
+                            ->label('Nota')
+                            ->rows(3)
+                            ->required(),
+                    ])
+                    ->columnSpanFull(),
             ]);
     }
 

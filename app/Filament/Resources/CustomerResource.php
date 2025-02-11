@@ -21,7 +21,12 @@ class CustomerResource extends Resource
     //Define el ícono de navegación del recurso (Lateral izquierdo)
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 1;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Administración';
+    }
 
     //Hace referencia al formulario de customer (create y editar)
     public static function form(Form $form): Form

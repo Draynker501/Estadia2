@@ -26,4 +26,8 @@ class Project extends Model
         return $this->hasMany(ProjectChecklist::class);
     }
 
+    public function notes()
+    {
+        return $this->morphMany(Note::class, 'notable');
+    }
 }

@@ -20,6 +20,13 @@ class ProjectResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?int $navigationSort = 2;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Administración';
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -62,12 +69,21 @@ class ProjectResource extends Resource
                             ->required()
                             ->label('Task')
                             ->placeholder('Select a task'),
-                        ])
+                    ])
                     ->orderable(column: 'orden') // Habilitar la funcionalidad de ordenamiento en el repeater
                     ->defaultItems(1) // Número de items por defecto en el repeater
                     // ->createItemButtonLabel('Add Task') // Texto del botón para agregar un nuevo item
                     ->minItems(1) // Mínimo de items requeridos
                     ->collapsible(), // Permite colapsar los pasos para mejor visualización
+                Forms\Components\Repeater::make('notes')
+                    ->relationship('notes')
+                    ->schema([
+                        Forms\Components\Textarea::make('content')
+                            ->label('Nota')
+                            ->rows(3)
+                            ->required(),
+                    ])
+                    ->columnSpanFull(),
             ]);
     }
 
