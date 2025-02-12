@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ProjectResource\Pages;
 use App\Filament\Resources\ProjectResource\RelationManagers;
 use App\Models\Project;
+use App\Models\Checklist;
+use Illuminate\Support\Str;
 use Filament\Actions\DeleteAction;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -70,11 +72,12 @@ class ProjectResource extends Resource
                             ->label('Task')
                             ->placeholder('Select a task'),
                     ])
-                    ->orderable(column: 'orden') // Habilitar la funcionalidad de ordenamiento en el repeater
+                    ->orderable(column: 'orden') // Habilitar la funcionalidad de ordenamiento
                     ->defaultItems(1) // Número de items por defecto en el repeater
-                    // ->createItemButtonLabel('Add Task') // Texto del botón para agregar un nuevo item
                     ->minItems(1) // Mínimo de items requeridos
-                    ->collapsible(), // Permite colapsar los pasos para mejor visualización
+                    ->collapsible() // Permite colapsar los pasos para mejor visualización
+                    ->itemLabel(fn($state) => isset($state['checklist_id']) ? Checklist::find($state['checklist_id'])?->task ?? 'Nueva tarea' : 'Nueva tarea'),
+
                 Forms\Components\Repeater::make('notes')
                     ->relationship('notes')
                     ->schema([
@@ -83,7 +86,9 @@ class ProjectResource extends Resource
                             ->rows(3)
                             ->required(),
                     ])
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->collapsible()
+                    ->itemLabel(fn($state) => isset($state['content']) ? Str::limit($state['content'], 30) : 'Nueva nota'),
             ]);
     }
 
@@ -116,6 +121,10 @@ class ProjectResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\Action::make('revisar')
+                    ->label('Revisar')
+                    ->icon('heroicon-o-eye')
+                    ->url(fn(Project $record) => ProjectResource::getUrl('review', ['record' => $record->id])),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -137,6 +146,7 @@ class ProjectResource extends Resource
             'index' => Pages\ListProjects::route('/'),
             'create' => Pages\CreateProject::route('/create'),
             'edit' => Pages\EditProject::route('/{record}/edit'),
+            'review' => Pages\ReviewProject::route('/{record}/review'),
         ];
     }
 }

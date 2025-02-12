@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class ProjectChecklist extends Model
 {
@@ -29,6 +30,21 @@ class ProjectChecklist extends Model
         return $this->belongsTo(Checklist::class);
     }
 
+    public function checkStatuses()
+    {
+        return $this->hasMany(CheckStatus::class);
+    }
+
+    public function isCompleted()
+    {
+        return DB::table('check_status as cs')
+            ->join('checks as c', 'cs.check_id', '=', 'c.id')
+            ->where('cs.project_checklist_id', $this->id)
+            ->where('c.required', true)
+            ->where('cs.checked', false)
+            ->count() === 0;
+    }
+
     protected static function booted()
     {
         static::creating(function ($model) {
@@ -38,6 +54,12 @@ class ProjectChecklist extends Model
 
                 $model->orden = ($maxOrder ?? 0) + 1; // Evitar valores NULL y asignar 1 si es el primer registro
             }
+        });
+
+        static::updated(function ($model) {
+            // Actualizar automáticamente el campo "completed"
+            $model->completed = $model->isCompleted();
+            $model->saveQuietly(); // Evita ciclos infinitos al guardar
         });
     }
 }

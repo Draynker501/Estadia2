@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ChecklistResource\Pages;
 use App\Filament\Resources\ChecklistResource\RelationManagers;
 use App\Models\Checklist;
+use Illuminate\Support\Str;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -44,7 +45,8 @@ class ChecklistResource extends Resource
                             ->required()
                     ])
                     ->minItems(1) // Mínimo 1 paso requerido
-                    ->collapsible(),
+                    ->collapsible()
+                    ->itemLabel(fn ($state) => $state['name'] ?? 'Nuevo paso'), // Muestra el nombre en el título
                 Forms\Components\Repeater::make('notes')
                     ->relationship('notes')
                     ->schema([
@@ -53,7 +55,9 @@ class ChecklistResource extends Resource
                             ->rows(3)
                             ->required(),
                     ])
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->collapsible()
+                    ->itemLabel(fn ($state) => isset($state['content']) ? Str::limit($state['content'], 30) : 'Nueva nota'),
             ]);
     }
 
