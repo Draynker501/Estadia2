@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('task', 100);
             $table->softDeletes();
+            $table->string('slug')->unique()->nullable();
         });
     }
 

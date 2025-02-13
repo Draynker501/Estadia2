@@ -56,6 +56,7 @@ class ChecklistResource extends Resource
                     ])
                     ->columnSpanFull()
                     ->collapsible()
+                    ->default([])
                     ->itemLabel(fn ($state) => isset($state['content']) ? Str::limit($state['content'], 30) : 'Nueva nota'),
             ]);
     }

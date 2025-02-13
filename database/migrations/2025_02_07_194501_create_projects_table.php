@@ -17,6 +17,8 @@ return new class extends Migration {
             $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
+            $table->string('slug')->unique()->nullable();
+
 
             $table->foreign('customer_id')->references('id')->on('customers');
 

@@ -137,29 +137,23 @@ class ProjectResource extends Resource
     }
 
     protected static function updateCheckStatuses($state)
-{
-    foreach ($state as $checklistData) {
-        // Verifica que checklist_id esté presente en los datos
-        if (isset($checklistData['checklist_id'])) {
-            // Encuentra el checklist basado en la ID proporcionada
+    {
+        foreach ($state as $checklistData) {
+            // Asegúrate de que la ID esté disponible antes de intentar acceder a ella
             $checklist = Checklist::find($checklistData['checklist_id']);
 
-            if ($checklist) {
+            if ($checklist && isset($checklistData['id'])) {
                 // Crea un registro en check_status para cada check dentro del checklist
                 foreach ($checklist->checks as $check) {
                     CheckStatus::firstOrCreate([
-                        'project_checklist_id' => $checklistData['checklist_id'], // Usamos checklist_id correctamente
+                        'project_checklist_id' => $checklistData['id'], // Asegúrate de usar el ID correcto de project_checklist
                         'check_id' => $check->id,
-                        'checked' => false, // Estado por defecto
+                        'checked' => false, // Estado por defecto, puedes cambiarlo según lo que necesites
                     ]);
                 }
             }
-        } else {
-            // Maneja el caso en que checklist_id no está presente
-            \Log::error('Checklist ID no encontrado en los datos: ', $checklistData);
         }
     }
-}
 
 
 

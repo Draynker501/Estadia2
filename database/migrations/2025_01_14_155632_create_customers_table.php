@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string(column: 'phone',length: '15')->unique();
             $table->string(column: 'email',length: '50')->unique();
             $table->boolean(column: 'status')->default(true);
+            $table->string('slug')->unique()->nullable();
+
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
