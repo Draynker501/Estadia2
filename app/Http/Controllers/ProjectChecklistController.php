@@ -65,23 +65,34 @@ class ProjectChecklistController extends Controller
             );
         }
 
-        // Verificar si todos los checks obligatorios están completados
-        $requiredCheckIds = Check::where('checklist_id', $projectChecklist->checklist_id)
+        // Obtener IDs de checks requeridos y todos los checks en el checklist
+        $checklistId = $projectChecklist->checklist_id;
+        $requiredCheckIds = Check::where('checklist_id', $checklistId)
             ->where('required', true)
             ->pluck('id')
             ->toArray();
 
+        $allCheckIds = Check::where('checklist_id', $checklistId)
+            ->pluck('id')
+            ->toArray();
+
+        // Contar cuántos de estos están marcados en CheckStatus
         $checkedRequiredChecks = CheckStatus::where('project_checklist_id', $projectChecklistId)
             ->whereIn('check_id', $requiredCheckIds)
             ->where('checked', true)
             ->count();
 
-        $allRequiredChecked = $checkedRequiredChecks === count($requiredCheckIds);
+        $checkedAllChecks = CheckStatus::where('project_checklist_id', $projectChecklistId)
+            ->whereIn('check_id', $allCheckIds)
+            ->where('checked', true)
+            ->count();
 
-        // Actualizar el estado del checklist
-        $projectChecklist->update(['completed' => $allRequiredChecked]);
+        // Condición corregida: se completa si (todos los requeridos) o (todos en total) están marcados
+        $allRequiredChecked = $checkedRequiredChecks === count($requiredCheckIds);
+        $allChecksChecked = $checkedAllChecks === count($allCheckIds);
+
+        $projectChecklist->update(['completed' => $allRequiredChecked || $allChecksChecked]);
 
         return redirect()->back()->with('success', 'Los cambios se han guardado correctamente.');
     }
-
 }

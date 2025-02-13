@@ -32,7 +32,7 @@ class ProjectChecklist extends Model
 
     public function checkStatuses()
     {
-        return $this->hasMany(CheckStatus::class,'project_checklist_id');
+        return $this->hasMany(CheckStatus::class, 'project_checklist_id');
     }
 
     // 🔹 Obtener todos los Checks del Checklist
@@ -43,13 +43,30 @@ class ProjectChecklist extends Model
 
     public function isCompleted()
     {
-        return DB::table('check_status as cs')
-            ->join('checks as c', 'cs.check_id', '=', 'c.id')
-            ->where('cs.project_checklist_id', $this->id)
-            ->where('c.required', true)
-            ->where('cs.checked', false)
-            ->count() === 0;
+        $checklistId = $this->checklist_id;
+
+        $requiredCheckIds = Check::where('checklist_id', $checklistId)
+            ->where('required', true)
+            ->pluck('id')
+            ->toArray();
+
+        $allCheckIds = Check::where('checklist_id', $checklistId)
+            ->pluck('id')
+            ->toArray();
+
+        $checkedRequiredChecks = CheckStatus::where('project_checklist_id', $this->id)
+            ->whereIn('check_id', $requiredCheckIds)
+            ->where('checked', true)
+            ->count();
+
+        $checkedAllChecks = CheckStatus::where('project_checklist_id', $this->id)
+            ->whereIn('check_id', $allCheckIds)
+            ->where('checked', true)
+            ->count();
+
+        return ($checkedRequiredChecks === count($requiredCheckIds)) || ($checkedAllChecks === count($allCheckIds));
     }
+
 
     protected static function booted()
     {
