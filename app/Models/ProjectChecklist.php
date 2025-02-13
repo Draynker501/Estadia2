@@ -32,7 +32,13 @@ class ProjectChecklist extends Model
 
     public function checkStatuses()
     {
-        return $this->hasMany(CheckStatus::class);
+        return $this->hasMany(CheckStatus::class,'project_checklist_id');
+    }
+
+    // 🔹 Obtener todos los Checks del Checklist
+    public function checks()
+    {
+        return $this->hasManyThrough(Check::class, Checklist::class, 'id', 'checklist_id', 'checklist_id', 'id');
     }
 
     public function isCompleted()

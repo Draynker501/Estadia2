@@ -21,4 +21,10 @@ class Check extends Model
     {
         return $this->belongsTo(Checklist::class);
     }
+
+    // 🔹 Relación con CheckStatus
+    public function checkStatuses()
+    {
+        return $this->hasMany(CheckStatus::class, 'check_id');
+    }
 }

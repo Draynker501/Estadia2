@@ -30,4 +30,9 @@ class Project extends Model
     {
         return $this->morphMany(Note::class, 'notable');
     }
+
+    public function checkStatuses()
+    {
+        return $this->hasMany(CheckStatus::class);
+    }
 }

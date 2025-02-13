@@ -52,8 +52,7 @@ class ChecklistResource extends Resource
                     ->schema([
                         Forms\Components\Textarea::make('content')
                             ->label('Nota')
-                            ->rows(3)
-                            ->required(),
+                            ->rows(3),
                     ])
                     ->columnSpanFull()
                     ->collapsible()

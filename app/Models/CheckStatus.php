@@ -12,6 +12,8 @@ class CheckStatus extends Model
     protected $table = 'check_status';
     protected $fillable = ['project_checklist_id', 'check_id', 'checked'];
 
+    public $timestamps = false;
+
     public function projectChecklist()
     {
         return $this->belongsTo(ProjectChecklist::class);

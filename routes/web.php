@@ -1,12 +1,15 @@
 <?php
 
-use App\Filament\Resources\ProjectResource\Pages\ReviewProject;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProjectChecklistController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Agrega una ruta personalizada para manejar el envío del formulario de marcar el checklist como completado
-Route::post('/projects/{record}/review/mark-checklist', [ReviewProject::class, 'markChecklistAsCompleted'])
-    ->name('filament.resources.project-resource.review.mark-checklist');
+Route::post('/project-checklist/{check}/mark', [ProjectChecklistController::class, 'markCheck'])->name('project-checklist.check');
+
+Route::post('/project-checklist/{id}/update-checks', [ProjectChecklistController::class, 'updateChecks'])
+    ->name('project-checklist.updateChecks');
+
+
