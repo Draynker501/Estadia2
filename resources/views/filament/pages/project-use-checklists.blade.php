@@ -68,4 +68,12 @@
         class="mt-3 px-4 py-2 bg-green-600 text-black dark:text-white rounded hover:bg-green-700">
         Descargar PDF
     </a>
+
+    <!-- Botón para enviar el correo -->
+    <form method="POST" action="{{ route('project-checklist.email', $record->id) }}" class="mt-3">
+        @csrf
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-black dark:text-white rounded hover:bg-blue-700">
+            Enviar por Correo
+        </button>
+    </form>
 </x-filament::page>

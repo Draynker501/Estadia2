@@ -13,7 +13,8 @@ Route::post('/project-checklist/{check}/mark', [ProjectChecklistController::clas
 Route::post('/project-checklist/{id}/update-checks', [ProjectChecklistController::class, 'updateChecks'])
     ->name('project-checklist.updateChecks');
 
-    Route::get('/project-checklist/{id}/pdf', [ProjectChecklistController::class, 'descargarPDF'])
+Route::get('/project-checklist/{id}/pdf', [ProjectChecklistController::class, 'descargarPDF'])
     ->name('project-checklist.pdf');
 
-
+Route::post('/project-checklist/{id}/email', [ProjectChecklistController::class, 'enviarPDFPorCorreo'])
+    ->name('project-checklist.email');

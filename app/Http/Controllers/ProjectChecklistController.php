@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\CheckStatus;
 use App\Models\ProjectChecklist;
 use App\Models\Check;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ProjectChecklistMail;
 
 class ProjectChecklistController extends Controller
 {
@@ -103,11 +105,29 @@ class ProjectChecklistController extends Controller
         $record = Project::with('projectChecklists.checklist.checks.checkStatuses')->findOrFail($id);
 
         // Reemplazar espacios y caracteres especiales en el nombre del archivo
-        $fileName = str_replace([' ', '/'], '-', $record->name) .'.pdf';
+        $fileName = str_replace([' ', '/'], '-', $record->name) . '.pdf';
 
         $pdf = app('dompdf.wrapper')->loadView('pdf.project_checklist', compact('record'));
 
         return $pdf->download($fileName);
+    }
+
+    public function enviarPDFPorCorreo($id)
+    {
+        // Obtener el proyecto con las relaciones necesarias
+        $record = Project::with('projectChecklists.checklist.checks.checkStatuses')->findOrFail($id);
+
+        // Generar el PDF
+        $pdf = app('dompdf.wrapper')->loadView('pdf.project_checklist', compact('record'))->output();
+
+        // Definir el destinatario (puedes modificarlo según tus necesidades)
+        $destinatario = 'cliente@example.com'; // Esto puede ser dinámico
+
+        // Enviar el correo con el archivo PDF adjunto
+        Mail::to($destinatario)->send(new ProjectChecklistMail($record, $pdf));
+
+        // Retornar una respuesta o redirigir
+        return back()->with('success', 'Correo enviado con éxito.');
     }
 
 }
