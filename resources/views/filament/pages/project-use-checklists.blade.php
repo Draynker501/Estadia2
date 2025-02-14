@@ -63,4 +63,9 @@
             </div>
         @endforeach
     </div>
+
+    <a href="{{ route('project-checklist.pdf', $record->id) }}" 
+        class="mt-3 px-4 py-2 bg-green-600 text-black dark:text-white rounded hover:bg-green-700">
+        Descargar PDF
+    </a>
 </x-filament::page>

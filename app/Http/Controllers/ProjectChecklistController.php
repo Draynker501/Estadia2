@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use App\Models\CheckStatus;
 use App\Models\ProjectChecklist;
@@ -95,4 +97,17 @@ class ProjectChecklistController extends Controller
 
         return redirect()->back()->with('success', 'Los cambios se han guardado correctamente.');
     }
+
+    public function descargarPDF($id)
+    {
+        $record = Project::with('projectChecklists.checklist.checks.checkStatuses')->findOrFail($id);
+
+        // Reemplazar espacios y caracteres especiales en el nombre del archivo
+        $fileName = str_replace([' ', '/'], '-', $record->name) .'.pdf';
+
+        $pdf = app('dompdf.wrapper')->loadView('pdf.project_checklist', compact('record'));
+
+        return $pdf->download($fileName);
+    }
+
 }
