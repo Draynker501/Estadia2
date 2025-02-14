@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Str;
 
 class Checklist extends Model
 {
@@ -32,4 +33,15 @@ class Checklist extends Model
     {
         return $this->hasMany(ProjectChecklist::class);
     }
+
+    // protected static function booted()
+    // {
+    //     static::creating(function ($project) {
+    //         $project->slug = Str::slug($project->task);
+    //     });
+
+    //     static::updating(function ($project) {
+    //         $project->slug = Str::slug($project->task);
+    //     });
+    // }
 }

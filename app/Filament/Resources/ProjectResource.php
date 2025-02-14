@@ -87,6 +87,7 @@ class ProjectResource extends Resource
                             ->rows(3),
                     ])
                     ->columnSpanFull()
+                    ->default([])
                     ->collapsible()
                     ->itemLabel(fn($state) => isset($state['content']) ? Str::limit($state['content'], 30) : 'Nueva nota'),
             ]);
