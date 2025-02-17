@@ -129,5 +129,4 @@ class ProjectChecklistController extends Controller
         // Retornar una respuesta o redirigir
         return back()->with('success', 'Correo enviado con éxito.');
     }
-
 }

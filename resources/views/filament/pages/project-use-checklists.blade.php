@@ -64,16 +64,20 @@
         @endforeach
     </div>
 
-    <a href="{{ route('project-checklist.pdf', $record->id) }}" 
-        class="mt-3 px-4 py-2 bg-green-600 text-black dark:text-white rounded hover:bg-green-700">
-        Descargar PDF
-    </a>
+    <div class="flex space-x-2 mt-3">
+        <!-- Botón para descargar PDF -->
+        <a href="{{ route('project-checklist.pdf', $record->id) }}" 
+            class="px-4 py-2 bg-green-600 text-black dark:text-white rounded hover:bg-green-700">
+            Descargar PDF
+        </a>
 
-    <!-- Botón para enviar el correo -->
-    <form method="POST" action="{{ route('project-checklist.email', $record->id) }}" class="mt-3">
-        @csrf
-        <button type="submit" class="px-4 py-2 bg-blue-600 text-black dark:text-white rounded hover:bg-blue-700">
-            Enviar por Correo
-        </button>
-    </form>
+        <!-- Botón para enviar correo -->
+        <form method="POST" action="{{ route('project-checklist.email', $record->id) }}" class="flex items-center">
+            @csrf
+            <button type="submit" class="px-4 py-2 bg-blue-600 text-black dark:text-white rounded hover:bg-blue-700">
+                Enviar por Correo
+            </button>
+        </form>
+    </div>
+    
 </x-filament::page>
