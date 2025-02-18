@@ -16,14 +16,14 @@ class Project extends Model
         return $this->belongsTo(Customer::class);
     }
 
-    public function checklists()
-    {
-        return $this->hasMany(Checklist::class);
-    }
-
     public function projectChecklists()
     {
         return $this->hasMany(ProjectChecklist::class);
+    }
+
+    public function projectChecklistRels()
+    {
+        return $this->hasMany(ProjectChecklistRel::class);
     }
 
     public function notes()
@@ -31,8 +31,8 @@ class Project extends Model
         return $this->morphMany(Note::class, 'notable');
     }
 
-    public function checkStatuses()
+    public function projectChecklistChecks()
     {
-        return $this->hasMany(CheckStatus::class);
+        return $this->hasMany(ProjectChecklistCheck::class);
     }
 }

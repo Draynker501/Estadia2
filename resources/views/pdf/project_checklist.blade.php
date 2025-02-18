@@ -16,18 +16,38 @@
 <body>
     <div class="container">
         <div class="title">{{ $record->name }} - Checklists</div>
-        @foreach ($record->projectChecklists as $projectChecklist)
+
+        @php
+            $firstPendingFound = false; // Para saber cuál es el primer pendiente
+        @endphp
+
+        @foreach ($record->projectChecklistRels as $projectChecklistRel)
+            @php
+                $isPending = !$projectChecklistRel->completed;
+                $isLocked = $firstPendingFound; // Bloqueamos si ya encontramos un pendiente antes
+                if ($isPending) {
+                    $firstPendingFound = true; // Marcar que hemos encontrado el primer pendiente
+                }
+            @endphp
+
             <div class="section">
-                <h3>{{ $projectChecklist->checklist->task }}</h3>
+                <h3>{{ $projectChecklistRel->projectChecklist->task }}</h3>
                 <h4>Checks:</h4>
                 <ul>
-                    @foreach ($projectChecklist->checklist->checks as $check)
+                    @foreach ($projectChecklistRel->projectChecklist->projectChecks as $projectCheck)
                         @php
-                            $checked = optional($check->checkStatuses->where('project_checklist_id', $projectChecklist->id)->first())->checked;
+                            $checked = optional(
+                                $projectCheck->projectChecklistChecks
+                                    ->where('project_checklist_rel_id', $projectChecklistRel->id)
+                                    ->first(),
+                            )->checked;
                         @endphp
                         <li>
                             <input type="checkbox" {{ $checked ? 'checked' : '' }} disabled>
-                            {{ $check->name }} 
+                            {{ $projectCheck->name }} 
+                            @if ($projectCheck->required)
+                                <span class="text-red-500 font-bold">(Requerido)</span>
+                            @endif
                         </li>
                     @endforeach
                 </ul>

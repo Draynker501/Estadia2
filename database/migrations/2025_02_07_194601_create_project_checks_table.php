@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('checks', function (Blueprint $table) {
+        Schema::create('project_checks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger(column: 'checklist_id');
+            $table->unsignedBigInteger(column: 'project_checklist_id');
             $table->string('name', 150);
             $table->boolean('required')->default(false);
 
-            $table->foreign('checklist_id')->references('id')->on('checklists');
+            $table->foreign('project_checklist_id')->references('id')->on('project_checklists');
         });
     }
 
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('checks');
+        Schema::dropIfExists('project_checks');
     }
 };

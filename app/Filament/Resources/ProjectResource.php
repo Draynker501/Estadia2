@@ -5,8 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ProjectResource\Pages;
 use App\Filament\Resources\ProjectResource\RelationManagers;
 use App\Models\Project;
-use App\Models\Checklist;
-use App\Models\CheckStatus;
+use App\Models\ProjectChecklist;
+use App\Models\ProjectChecklistCheck;
 use Illuminate\Support\Str;
 use Filament\Actions\DeleteAction;
 use Filament\Forms;
@@ -65,10 +65,10 @@ class ProjectResource extends Resource
                         'strike', // Botón de tachado
                     ]),
                 Forms\Components\Repeater::make('projectChecklists')
-                    ->relationship('projectChecklists')
+                    ->relationship('projectChecklistRels')
                     ->schema([
-                        Forms\Components\Select::make('checklist_id') // El campo select para elegir un checklist
-                            ->relationship('checklist', 'task') // Relación con el modelo Checklist
+                        Forms\Components\Select::make('project_checklist_id') // El campo select para elegir un checklist
+                            ->relationship('projectChecklist', 'task') // Relación con el modelo Checklist
                             ->required()
                             ->label('Task')
                             ->placeholder('Select a task'),
@@ -77,8 +77,8 @@ class ProjectResource extends Resource
                     ->defaultItems(1) // Número de items por defecto en el repeater
                     ->minItems(1) // Mínimo de items requeridos
                     ->collapsible() // Permite colapsar los pasos para mejor visualización
-                    ->itemLabel(fn($state) => isset($state['checklist_id']) ? Checklist::find($state['checklist_id'])?->task ?? 'Nueva tarea' : 'Nueva tarea')
-                    ->afterStateUpdated(fn($state, $set) => self::updateCheckStatuses($state)), // Llama a la función para actualizar los estados
+                    ->itemLabel(fn($state) => isset($state['project_checklist_id']) ? ProjectChecklist::find($state['project_checklist_id'])?->task ?? 'Nueva tarea' : 'Nueva tarea')
+                    ->afterStateUpdated(fn($state, $set) => self::updateProjectChecklistCheck($state)), // Llama a la función para actualizar los estados
                 Forms\Components\Repeater::make('notes')
                     ->relationship('notes')
                     ->schema([
@@ -137,18 +137,18 @@ class ProjectResource extends Resource
         ];
     }
 
-    protected static function updateCheckStatuses($state)
+    protected static function updateProjectChecklistCheck($state)
     {
         foreach ($state as $checklistData) {
             // Asegúrate de que la ID esté disponible antes de intentar acceder a ella
-            $checklist = Checklist::find($checklistData['checklist_id']);
+            $projectChecklist = ProjectChecklist::find($checklistData['project_checklist_id']);
 
-            if ($checklist && isset($checklistData['id'])) {
+            if ($projectChecklist && isset($checklistData['id'])) {
                 // Crea un registro en check_status para cada check dentro del checklist
-                foreach ($checklist->checks as $check) {
-                    CheckStatus::firstOrCreate([
-                        'project_checklist_id' => $checklistData['id'], // Asegúrate de usar el ID correcto de project_checklist
-                        'check_id' => $check->id,
+                foreach ($projectChecklist->projectChecks as $projectCheck) {
+                    ProjectChecklistCheck::firstOrCreate([
+                        'project_checklist_rel_id' => $checklistData['id'], // Asegúrate de usar el ID correcto de project_checklist
+                        'project_check_id' => $projectCheck->id,
                         'checked' => false, // Estado por defecto, puedes cambiarlo según lo que necesites
                     ]);
                 }

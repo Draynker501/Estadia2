@@ -10,15 +10,15 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('project_checklists', function (Blueprint $table) {
+        Schema::create('project_checklist_rel', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger(column: 'project_id');
-            $table->unsignedBigInteger(column: 'checklist_id');
+            $table->unsignedBigInteger(column: 'project_checklist_id');
             $table->integer('orden')->unsigned();
             $table->boolean('completed')->default(value: false);
 
             $table->foreign(columns: 'project_id')->references('id')->on('projects');
-            $table->foreign('checklist_id')->references('id')->on('checklists');
+            $table->foreign('project_checklist_id')->references('id')->on('project_checklists');
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('project_checklists');
+        Schema::dropIfExists('project_checklist_id');
     }
 };

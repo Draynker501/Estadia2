@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ChecklistResource\Pages;
-use App\Filament\Resources\ChecklistResource\RelationManagers;
-use App\Models\Checklist;
+use App\Filament\Resources\ProjectChecklistResource\Pages;
+use App\Filament\Resources\ProjectChecklistResource\RelationManagers;
+use App\Models\ProjectChecklist;
 use Illuminate\Support\Str;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -14,9 +14,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ChecklistResource extends Resource
+class ProjectChecklistResource extends Resource
 {
-    protected static ?string $model = Checklist::class;
+    protected static ?string $model = ProjectChecklist::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -35,7 +35,7 @@ class ChecklistResource extends Resource
                     ->required()
                     ->maxLength(100),
                 Forms\Components\Repeater::make('check')
-                    ->relationship('checks') // Relación con ProjectStep
+                    ->relationship('projectChecks') // Relación con ProjectStep
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->required()
@@ -95,9 +95,9 @@ class ChecklistResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListChecklists::route('/'),
-            'create' => Pages\CreateChecklist::route('/create'),
-            'edit' => Pages\EditChecklist::route('/{record}/edit'),
+            'index' => Pages\ListProjectChecklists::route('/'),
+            'create' => Pages\CreateProjectChecklist::route('/create'),
+            'edit' => Pages\EditProjectChecklist::route('/{record}/edit'),
         ];
     }
 }

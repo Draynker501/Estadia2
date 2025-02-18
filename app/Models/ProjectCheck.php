@@ -5,12 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CheckStatus extends Model
+class ProjectCheck extends Model
 {
     use HasFactory;
 
-    protected $table = 'check_status';
-    protected $fillable = ['project_checklist_id', 'check_id', 'checked'];
+    protected $fillable = ['project_checklist_id','name','required'];
+
+    protected $casts = [
+        'required' => 'boolean',
+    ];
 
     public $timestamps = false;
 
@@ -19,8 +22,8 @@ class CheckStatus extends Model
         return $this->belongsTo(ProjectChecklist::class);
     }
 
-    public function check()
+    public function projectChecklistChecks()
     {
-        return $this->belongsTo(Check::class);
+        return $this->hasMany(ProjectChecklistCheck::class, 'project_check_id');
     }
 }
