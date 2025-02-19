@@ -20,7 +20,6 @@ return new class extends Migration
             $table->boolean('send_notification')->default(true);
             $table->rememberToken();
             $table->timestamps();
-            $table->string('slug')->unique()->nullable();
 
             // $table->softDeletes(); // Adds 'deleted_at' column
         });

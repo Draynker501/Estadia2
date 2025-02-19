@@ -14,11 +14,10 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger(column: 'customer_id');
             $table->string('name', '150');
+            $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            $table->string('slug')->unique()->nullable();
-
 
             $table->foreign('customer_id')->references('id')->on('customers');
 
