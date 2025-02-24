@@ -42,7 +42,7 @@
                                     ->first(),
                             )->checked;
                         @endphp
-                        <li>
+                        <li style="list-style-type: none;">
                             <input type="checkbox" {{ $checked ? 'checked' : '' }} disabled>
                             {{ $projectCheck->name }} 
                             @if ($projectCheck->required)
