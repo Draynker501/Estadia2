@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CustomerResource\Pages;
-use App\Filament\Resources\CustomerResource\RelationManagers;
-use App\Models\Customer;
+use App\Filament\Resources\ClientResource\Pages;
+use App\Filament\Resources\ClientResource\RelationManagers;
+use App\Models\Client;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,10 +13,10 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CustomerResource extends Resource
+class ClientResource extends Resource
 {
     //Define el modelo al que corresponde el recurso
-    protected static ?string $model = Customer::class;
+    protected static ?string $model = Client::class;
 
     //Define el ícono de navegación del recurso (Lateral izquierdo)
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -110,7 +110,7 @@ class CustomerResource extends Resource
                 ]),
             ])
             ->query(function (Builder $query) {
-                return Customer::query()->filterByAuthor();
+                return Client::query()->filterByAuthor();
             });
     }
 
@@ -126,10 +126,10 @@ class CustomerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCustomers::route('/'),
-            'create' => Pages\CreateCustomer::route('/create'),
-            'edit' => Pages\EditCustomer::route('/{record}/edit'),
-            'view' => Pages\ViewCustomer::route('/{record}'),
+            'index' => Pages\ListClient::route('/'),
+            'create' => Pages\CreateClient::route('/create'),
+            'edit' => Pages\EditClient::route('/{record}/edit'),
+            'view' => Pages\ViewClient::route('/{record}'),
         ];
     }
 }

@@ -6,7 +6,7 @@ use Barryvdh\DomPDF\Facade\pdf as PDF;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ProjectChecklistMail;
 use Livewire\Component;
-use App\Models\ProjectChecklistRel;
+use App\Models\ProjectProjectChecklist;
 use App\Models\ProjectChecklistCheck;
 use App\Models\ProjectCheck;
 use App\Models\Project;
@@ -26,7 +26,7 @@ class ChecklistManager extends Component
 
     public function loadChecklists()
     {
-        $this->checklists = $this->record->projectChecklistRels->map(function ($rel) {
+        $this->checklists = $this->record->projectProjectChecklists->map(function ($rel) {
             return [
                 'id' => $rel->id,
                 'task' => $rel->projectChecklist->task,
@@ -37,7 +37,7 @@ class ChecklistManager extends Component
                         'name' => $check->name,
                         'required' => $check->required,
                         'checked' => $check->projectChecklistChecks
-                            ->where('project_checklist_rel_id', $rel->id)
+                            ->where('project_project_checklist_id', $rel->id)
                             ->first()?->checked ?? false
                     ];
                 }),
@@ -49,7 +49,7 @@ class ChecklistManager extends Component
     {
         ProjectChecklistCheck::updateOrCreate(
             [
-                'project_checklist_rel_id' => $relId,
+                'project_project_checklist_id' => $relId,
                 'project_check_id' => $checkId
             ],
             [
@@ -64,14 +64,14 @@ class ChecklistManager extends Component
 
     private function updateChecklistStatus($relId)
     {
-        $rel = ProjectChecklistRel::findOrFail($relId);
+        $rel = ProjectProjectChecklist::findOrFail($relId);
 
         $requiredCheckIds = ProjectCheck::where('project_checklist_id', $rel->project_checklist_id)
             ->where('required', true)
             ->pluck('id')
             ->toArray();
 
-        $checkedRequired = ProjectChecklistCheck::where('project_checklist_rel_id', $relId)
+        $checkedRequired = ProjectChecklistCheck::where('project_project_checklist_id', $relId)
             ->whereIn('project_check_id', $requiredCheckIds)
             ->where('checked', true)
             ->count();
@@ -104,7 +104,7 @@ class ChecklistManager extends Component
 
     public function sendEmail($id)
     {
-        $record = Project::with('projectChecklistRels.projectChecklist.projectChecks.projectChecklistChecks')->findOrFail($id);
+        $record = Project::with('projectProjectChecklists.projectChecklist.projectChecks.projectChecklistChecks')->findOrFail($id);
 
         $pdf = app('dompdf.wrapper')->loadView('pdf.project_checklist', compact('record'))->output();
 

@@ -10,11 +10,11 @@ class Project extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['customer_id', 'name', 'description', 'slug'];
+    protected $fillable = ['client_id', 'name', 'description'];
 
-    public function customer()
+    public function client()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Client::class);
     }
 
     public function projectChecklists()
@@ -22,9 +22,9 @@ class Project extends Model
         return $this->hasMany(ProjectChecklist::class);
     }
 
-    public function projectChecklistRels()
+    public function projectProjectChecklists()
     {
-        return $this->hasMany(ProjectChecklistRel::class);
+        return $this->hasMany(ProjectProjectChecklist::class);
     }
 
     public function notes()
@@ -46,13 +46,13 @@ class Project extends Model
             $count = Project::where('slug', 'like', $slug . '%')->count();
             $project->slug = $count ? "{$slug}-{$count}" : $slug;
         });
-    
+
         static::updating(function ($project) {
             if ($project->isDirty('name')) {
                 $slug = Str::slug($project->name);
                 $count = Project::where('slug', 'like', $slug . '%')
-                                ->where('id', '!=', $project->id)
-                                ->count();
+                    ->where('id', '!=', $project->id)
+                    ->count();
                 $project->slug = $count ? "{$slug}-{$count}" : $slug;
             }
         });

@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProjectChecklistRel extends Model
+class ProjectProjectChecklist extends Model
 {
     use HasFactory;
 
-    protected $table = 'project_checklist_rel';
+    protected $table = 'project_project_checklist';
 
     protected $fillable = ['project_id', 'project_checklist_id', 'orden', 'completed'];
 
@@ -53,12 +53,12 @@ class ProjectChecklistRel extends Model
             ->pluck('id')
             ->toArray();
 
-        $checkedRequiredChecks = ProjectChecklistCheck::where('project_checklist_rel_id', $this->id)
+        $checkedRequiredChecks = ProjectChecklistCheck::where('project_project_checklist_id', $this->id)
             ->whereIn('project_check_id', $requiredCheckIds)
             ->where('checked', true)
             ->count();
 
-        $checkedAllChecks = ProjectChecklistCheck::where('project_checklist_rel_id', $this->id)
+        $checkedAllChecks = ProjectChecklistCheck::where('project_project_checklist_id', $this->id)
             ->whereIn('project_check_id', $allCheckIds)
             ->where('checked', true)
             ->count();
@@ -71,7 +71,7 @@ class ProjectChecklistRel extends Model
     {
         static::creating(function ($model) {
             if (!$model->orden) { // Si no tiene 'orden', asignar el siguiente disponible
-                $maxOrder = ProjectChecklistRel::where('project_id', $model->project_id)
+                $maxOrder = ProjectProjectChecklist::where('project_id', $model->project_id)
                     ->max('orden'); // Obtener el mayor orden existente en ese proyecto
 
                 $model->orden = ($maxOrder ?? 0) + 1; // Evitar valores NULL y asignar 1 si es el primer registro

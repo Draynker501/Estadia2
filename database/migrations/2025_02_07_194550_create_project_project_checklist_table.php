@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('project_checklist_rel', function (Blueprint $table) {
+        Schema::create('project_project_checklist', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger(column: 'project_id');
             $table->unsignedBigInteger(column: 'project_checklist_id');
@@ -27,6 +27,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('project_checklist_id');
+        Schema::dropIfExists('project_project_checklist');
     }
 };

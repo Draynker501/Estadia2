@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\CustomerResource\Pages;
+namespace App\Filament\Resources\ClientResource\Pages;
 
-use App\Filament\Resources\CustomerResource;
+use App\Filament\Resources\ClientResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
-class CreateCustomer extends CreateRecord
+class CreateClient extends CreateRecord
 {
-    protected static string $resource = CustomerResource::class;
+    protected static string $resource = ClientResource::class;
 
     //Redirecciona al index luego de crear un registro
     protected function getRedirectUrl(): string

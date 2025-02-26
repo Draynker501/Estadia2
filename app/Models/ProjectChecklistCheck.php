@@ -10,13 +10,13 @@ class ProjectChecklistCheck extends Model
     use HasFactory;
 
     protected $table = 'project_checklist_check';
-    protected $fillable = ['project_checklist_rel_id', 'project_check_id', 'checked'];
+    protected $fillable = ['project_project_checklist_id', 'project_check_id', 'checked'];
 
     public $timestamps = false;
 
-    public function projectChecklistRel()
+    public function projectProjectChecklist()
     {
-        return $this->belongsTo(related: ProjectChecklistRel::class);
+        return $this->belongsTo(related: ProjectProjectChecklist::class);
     }
 
     public function projectCheck()

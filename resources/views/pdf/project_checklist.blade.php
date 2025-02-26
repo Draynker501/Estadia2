@@ -21,9 +21,9 @@
             $firstPendingFound = false; // Para saber cuál es el primer pendiente
         @endphp
 
-        @foreach ($record->projectChecklistRels as $projectChecklistRel)
+        @foreach ($record->projectProjectChecklists as $projectProjectChecklist)
             @php
-                $isPending = !$projectChecklistRel->completed;
+                $isPending = !$projectProjectChecklist->completed;
                 $isLocked = $firstPendingFound; // Bloqueamos si ya encontramos un pendiente antes
                 if ($isPending) {
                     $firstPendingFound = true; // Marcar que hemos encontrado el primer pendiente
@@ -31,18 +31,18 @@
             @endphp
 
             <div class="section">
-                <h3>{{ $projectChecklistRel->projectChecklist->task }}</h3>
+                <h3>{{ $projectProjectChecklist->projectChecklist->task }}</h3>
                 <h4>Checks:</h4>
                 <ul>
-                    @foreach ($projectChecklistRel->projectChecklist->projectChecks as $projectCheck)
+                    @foreach ($projectProjectChecklist->projectChecklist->projectChecks as $projectCheck)
                         @php
                             $checked = optional(
                                 $projectCheck->projectChecklistChecks
-                                    ->where('project_checklist_rel_id', $projectChecklistRel->id)
+                                    ->where('project_project_checklist_id', $projectProjectChecklist->id)
                                     ->first(),
                             )->checked;
                         @endphp
-                        <li style="list-style-type: none;">
+                        <li>
                             <input type="checkbox" {{ $checked ? 'checked' : '' }} disabled>
                             {{ $projectCheck->name }} 
                             @if ($projectCheck->required)

@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('project_checklist_check', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('project_checklist_rel_id');
+            $table->unsignedBigInteger('project_project_checklist_id');
             $table->unsignedBigInteger('project_check_id');
             $table->boolean('checked')->default(false);
 
-            $table->foreign('project_checklist_rel_id')->references('id')->on('project_checklist_rel')->constrained()->onDelete('cascade');
+            $table->foreign('project_project_checklist_id')->references('id')->on('project_project_checklist')->constrained()->onDelete('cascade');
             $table->foreign('project_check_id')->references('id')->on('project_checks');
         });
     }

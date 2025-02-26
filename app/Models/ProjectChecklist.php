@@ -28,19 +28,8 @@ class ProjectChecklist extends Model
         return $this->morphMany(Note::class, 'notable');
     }
 
-    public function projectChecklistRels()
+    public function projectProjectChecklists()
     {
-        return $this->hasMany(ProjectChecklistRel::class);
+        return $this->hasMany(ProjectProjectChecklist::class);
     }
-
-    // protected static function booted()
-    // {
-    //     static::creating(function ($project) {
-    //         $project->slug = Str::slug($project->task);
-    //     });
-
-    //     static::updating(function ($project) {
-    //         $project->slug = Str::slug($project->task);
-    //     });
-    // }
 }

@@ -40,9 +40,9 @@ class ProjectResource extends Resource
                     ->rules([
                         function ($get) {
                             return function (string $attribute, $value, $fail) use ($get) {
-                                $customerId = $get('customer_id');
+                                $clientId = $get('client_id');
                                 $projectId = $get('id');
-                                $exists = Project::where('customer_id', $customerId)
+                                $exists = Project::where('client_id', $clientId)
                                     ->where('name', $value)
                                     ->where('id', '!=', $projectId)
                                     ->exists();
@@ -53,8 +53,8 @@ class ProjectResource extends Resource
                             };
                         },
                     ]),
-                Forms\Components\Select::make('customer_id')
-                    ->relationship('customer', 'name') // Relación con el modelo Customer
+                Forms\Components\Select::make('client_id')
+                    ->relationship('client', 'name') // Relación con el modelo Customer
                     ->required(),
                 Forms\Components\RichEditor::make('description') //RichEditor permite dar formato al texto
                     ->required()
@@ -65,7 +65,7 @@ class ProjectResource extends Resource
                         'strike', // Botón de tachado
                     ]),
                 Forms\Components\Repeater::make('projectChecklists')
-                    ->relationship('projectChecklistRels')
+                    ->relationship('projectProjectChecklists')
                     ->schema([
                         Forms\Components\Select::make('project_checklist_id') // El campo select para elegir un checklist
                             ->relationship('projectChecklist', 'task') // Relación con el modelo Checklist
@@ -147,7 +147,7 @@ class ProjectResource extends Resource
                 // Crea un registro en check_status para cada check dentro del checklist
                 foreach ($projectChecklist->projectChecks as $projectCheck) {
                     ProjectChecklistCheck::firstOrCreate([
-                        'project_checklist_rel_id' => $checklistData['id'], // Asegúrate de usar el ID correcto de project_checklist
+                        'project_project_checklist_id' => $checklistData['id'], // Asegúrate de usar el ID correcto de project_checklist
                         'project_check_id' => $projectCheck->id,
                         'checked' => false, // Estado por defecto, puedes cambiarlo según lo que necesites
                     ]);

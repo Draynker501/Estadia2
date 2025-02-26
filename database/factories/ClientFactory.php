@@ -2,29 +2,27 @@
 
 namespace Database\Factories;
 
-use App\Models\Customer;
+use App\Models\Client;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Customer>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Client>
  */
-class CustomerFactory extends Factory
+class ClientFactory extends Factory
 {
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-    protected $model = Customer::class;
+    protected $model = Client::class;
 
     public function definition(): array
     {
         // Obtener IDs de usuarios que no sean Subscriptor y no tengan el permiso Ninguno
         $validUserIds = User::whereDoesntHave('roles', function ($query) {
             $query->where('name', 'Subscriptor');
-        })->whereDoesntHave('permissions', function ($query) {
-            $query->where('name', 'Ninguno');
         })->pluck('id');
         
         return [

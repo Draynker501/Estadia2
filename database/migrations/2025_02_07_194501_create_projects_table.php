@@ -12,17 +12,19 @@ return new class extends Migration {
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger(column: 'customer_id');
-            $table->string('name', '150');
-            $table->string('slug')->unique();
+            $table->unsignedBigInteger(column: 'client_id');
+            $table->string('name', '150')->unique();
             $table->text('description')->nullable();
+            $table->boolean('status')->default(false);
             $table->timestamps();
             $table->softDeletes();
+            $table->string('slug')->unique()->nullable();
 
-            $table->foreign('customer_id')->references('id')->on('customers');
+
+            $table->foreign('client_id')->references('id')->on('clients');
 
             // Agregar índice único sobre customer_id y name
-            $table->unique(['customer_id', 'name']);
+            $table->unique(['client_id', 'name']);
         });
     }
 
