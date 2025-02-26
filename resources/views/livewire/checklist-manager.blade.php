@@ -38,7 +38,7 @@
                         <li class="flex items-center space-x-2">
                             <input type="checkbox"
                                 wire:click="toggleCheck({{ $checklist['id'] }}, {{ $check['id'] }}, $event.target.checked)"
-                                {{ $check['checked'] ? 'checked' : '' }} 
+                                {{ $check['checked'] ? 'checked' : '' }}
                                 {{ $isLocked || $isFinalized ? 'disabled' : '' }}>
                             <!-- Bloquea si está bloqueado o si el proyecto está finalizado -->
                             <span>{{ $check['name'] }}</span>
@@ -54,7 +54,8 @@
                         pendiente.</p>
                 @endif
                 @if ($isFinalized)
-                    <p class="text-red-600 font-bold mt-2">El proyecto está finalizado, no puedes modificar los checklists.</p>
+                    <p class="text-red-600 font-bold mt-2">El proyecto está finalizado, no puedes modificar los
+                        checklists.</p>
                 @endif
 
             </div>
@@ -74,7 +75,15 @@
 
         @if ($record->status === 0 && $record->projectProjectChecklists->every(fn($checklist) => $checklist->completed))
             <button wire:click="finalizeProject()" class="bg-green-500 text-black px-4 py-2 rounded-md mt-4">
-                Finalizar Proyecto</button>
+                Finalizar Proyecto
+            </button>
+        @endif
+
+        <!-- Botón para reabrir proyecto, visible solo cuando el estado es 1 (finalizado) -->
+        @if ($record->status === 1)
+            <button wire:click="reopenProject" class="bg-yellow-500 text-black px-4 py-2 rounded-md mt-4">
+                Reabrir Proyecto
+            </button>
         @endif
     </div>
 </div>

@@ -96,6 +96,13 @@ class ChecklistManager extends Component
         $rel->update(['completed' => $allChecksCompleted || $requiredChecksCompleted]);
     }
 
+    public function reopenProject()
+    {
+        $this->record->update(['status' => 0]);
+        session()->flash('message', 'El proyecto ha sido reabierto.');
+        $this->loadChecklists();
+    }
+
     public function finalizeProject()
     {
         if ($this->allChecklistsCompleted()) {
