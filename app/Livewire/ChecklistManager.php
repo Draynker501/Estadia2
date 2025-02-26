@@ -96,6 +96,20 @@ class ChecklistManager extends Component
         $rel->update(['completed' => $allChecksCompleted || $requiredChecksCompleted]);
     }
 
+    public function finalizeProject()
+    {
+        if ($this->allChecklistsCompleted()) {
+            $this->record->update(['status' => 1]);
+            session()->flash('message', 'El proyecto ha sido finalizado.');
+            $this->loadChecklists();
+        }
+    }
+
+    private function allChecklistsCompleted()
+    {
+        return $this->record->projectProjectChecklists->every(fn($checklist) => $checklist->completed);
+    }
+
     public function render()
     {
         return view('livewire.checklist-manager');

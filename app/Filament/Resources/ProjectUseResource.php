@@ -42,7 +42,7 @@ class ProjectUseResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->formatStateUsing(function ($state) {
-                        return $state ? 'Completado' : 'Pendiente';
+                        return $state ? 'Finalizado' : 'En proceso';
                     })
                     ->colors([
                         'success' => fn($state): bool => $state, // Verde para Activo
