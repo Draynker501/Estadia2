@@ -10,6 +10,7 @@ use App\Models\ProjectProjectChecklist;
 use App\Models\ProjectChecklistCheck;
 use App\Models\ProjectCheck;
 use App\Models\Project;
+use Filament\Notifications\Notification;
 
 class ChecklistManager extends Component
 {
@@ -100,6 +101,13 @@ class ChecklistManager extends Component
     {
         $this->record->update(['status' => 0]);
         session()->flash('message', 'El proyecto ha sido reabierto.');
+
+        // Notificación de éxito al reabrir el proyecto
+        Notification::make()
+            ->title('Proyecto Reabierto')
+            ->success()
+            ->send();
+
         $this->loadChecklists();
     }
 
@@ -108,6 +116,13 @@ class ChecklistManager extends Component
         if ($this->allChecklistsCompleted()) {
             $this->record->update(['status' => 1]);
             session()->flash('message', 'El proyecto ha sido finalizado.');
+
+            // Notificación de éxito al finalizar el proyecto
+            Notification::make()
+                ->title('Proyecto Finalizado')
+                ->success()
+                ->send();
+
             $this->loadChecklists();
         }
     }
@@ -134,6 +149,12 @@ class ChecklistManager extends Component
         // Crear el nombre del archivo basado en el nombre del proyecto
         $fileName = 'Checklist_' . str_replace(' ', '_', $this->record->name) . '.pdf';
 
+        // Mostrar la notificación después de la descarga
+        Notification::make()
+            ->title('PDF Exportado con Éxito')
+            ->success()
+            ->send();
+
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->stream();
         }, $fileName);
@@ -149,6 +170,12 @@ class ChecklistManager extends Component
         $destinatario = 'cliente@example.com';
 
         Mail::to($destinatario)->send(new ProjectChecklistMail($record, $pdf));
+
+        // Notificación después de enviar el correo
+        Notification::make()
+            ->title('Correo Enviado Correctamente')
+            ->success()
+            ->send();
 
         session()->flash('message', 'Correo enviado correctamente.');
     }
