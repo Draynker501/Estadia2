@@ -100,8 +100,8 @@ class ProjectResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('customer.name')
-                    ->label('Customer')
+                Tables\Columns\TextColumn::make('client.name')
+                    ->label('Client')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

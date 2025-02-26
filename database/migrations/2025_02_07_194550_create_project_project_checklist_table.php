@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->integer('orden')->unsigned();
             $table->boolean('completed')->default(value: false);
 
-            $table->foreign(columns: 'project_id')->references('id')->on('projects');
+            $table->foreign(columns: 'project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->foreign('project_checklist_id')->references('id')->on('project_checklists');
         });
     }

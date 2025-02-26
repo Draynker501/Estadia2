@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name', 150);
             $table->boolean('required')->default(false);
 
-            $table->foreign('project_checklist_id')->references('id')->on('project_checklists');
+            $table->foreign('project_checklist_id')->references('id')->on('project_checklists')->onDelete('cascade');
         });
     }
 

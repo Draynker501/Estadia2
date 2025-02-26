@@ -66,7 +66,6 @@ class ProjectProjectChecklist extends Model
         return ($checkedRequiredChecks === count($requiredCheckIds)) || ($checkedAllChecks === count($allCheckIds));
     }
 
-
     protected static function booted()
     {
         static::creating(function ($model) {

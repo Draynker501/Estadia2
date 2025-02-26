@@ -66,17 +66,34 @@ class ChecklistManager extends Component
     {
         $rel = ProjectProjectChecklist::findOrFail($relId);
 
+        // Obtener todos los checks asociados al checklist
+        $allCheckIds = ProjectCheck::where('project_checklist_id', $rel->project_checklist_id)
+            ->pluck('id')
+            ->toArray();
+
+        // Obtener solo los checks requeridos
         $requiredCheckIds = ProjectCheck::where('project_checklist_id', $rel->project_checklist_id)
             ->where('required', true)
             ->pluck('id')
             ->toArray();
+
+        // Contar checks completados (tanto requeridos como todos)
+        $checkedAll = ProjectChecklistCheck::where('project_project_checklist_id', $relId)
+            ->whereIn('project_check_id', $allCheckIds)
+            ->where('checked', true)
+            ->count();
 
         $checkedRequired = ProjectChecklistCheck::where('project_project_checklist_id', $relId)
             ->whereIn('project_check_id', $requiredCheckIds)
             ->where('checked', true)
             ->count();
 
-        $rel->update(['completed' => $checkedRequired === count($requiredCheckIds)]);
+        // Verificar condiciones: todos los requeridos completados o todos los checks completados
+        $allChecksCompleted = count($allCheckIds) > 0 && $checkedAll === count($allCheckIds);
+        $requiredChecksCompleted = count($requiredCheckIds) > 0 && $checkedRequired === count($requiredCheckIds);
+
+        // Actualizar el estado del checklist
+        $rel->update(['completed' => $allChecksCompleted || $requiredChecksCompleted]);
     }
 
     public function render()

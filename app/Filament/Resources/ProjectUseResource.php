@@ -36,9 +36,18 @@ class ProjectUseResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('customer.name')
-                    ->label('Customer')
+                Tables\Columns\TextColumn::make('client.name')
+                    ->label('Client')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
+                    ->formatStateUsing(function ($state) {
+                        return $state ? 'Completado' : 'Pendiente';
+                    })
+                    ->colors([
+                        'success' => fn($state): bool => $state, // Verde para Activo
+                        'danger' => fn($state): bool => !$state, // Rojo para Inactivo
+                    ]),
             ])
             ->filters([
                 //
