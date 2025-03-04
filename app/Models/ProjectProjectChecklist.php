@@ -11,10 +11,11 @@ class ProjectProjectChecklist extends Model
 
     protected $table = 'project_project_checklist';
 
-    protected $fillable = ['project_id', 'project_checklist_id', 'orden', 'completed'];
+    protected $fillable = ['project_id', 'project_checklist_id', 'orden', 'completed','is_cloned'];
 
     protected $casts = [
         'completed' => 'boolean',
+        'is_cloned' => 'boolean',
     ];
 
     public $timestamps = false;
@@ -77,10 +78,6 @@ class ProjectProjectChecklist extends Model
             }
         });
 
-        static::updated(function ($model) {
-            // Actualizar automáticamente el campo "completed"
-            $model->completed = $model->isCompleted();
-            $model->saveQuietly(); // Evita ciclos infinitos al guardar
-        });
+        
     }
 }

@@ -9,7 +9,7 @@ class ProjectChecklist extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['task'];
+    protected $fillable = ['task','is_cloned'];
 
     public $timestamps = false;
 

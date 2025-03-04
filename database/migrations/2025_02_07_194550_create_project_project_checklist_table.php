@@ -16,9 +16,10 @@ return new class extends Migration {
             $table->unsignedBigInteger(column: 'project_checklist_id');
             $table->integer('orden')->unsigned();
             $table->boolean('completed')->default(value: false);
+            $table->boolean('is_cloned')->default(value: false);
 
             $table->foreign(columns: 'project_id')->references('id')->on('projects')->onDelete('cascade');
-            $table->foreign('project_checklist_id')->references('id')->on('project_checklists');
+            $table->foreign('project_checklist_id')->references('id')->on('project_checklists')->onDelete('cascade');
         });
     }
 

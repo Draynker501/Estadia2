@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('project_checklists', function (Blueprint $table) {
             $table->id();
             $table->string('task', 100);
+            $table->boolean('is_cloned')->default(value: false);
             $table->softDeletes();
         });
     }
