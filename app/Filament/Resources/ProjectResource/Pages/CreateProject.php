@@ -33,9 +33,7 @@ class CreateProject extends CreateRecord
                     ->where('project_checklist_id', $originalChecklist->id)
                     ->first();
 
-                // Si ya existe, solo actualizamos el valor de is_cloned si es necesario
                 $projectProjectChecklist->project_checklist_id = $duplicatedChecklist->id;
-                $projectProjectChecklist->is_cloned = true;
                 $projectProjectChecklist->save();
             }
 

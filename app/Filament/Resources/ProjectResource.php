@@ -151,7 +151,6 @@ class ProjectResource extends Resource
                 $projectProjectChecklist = new ProjectProjectChecklist();
                 $projectProjectChecklist->project_id = $projectId;
                 $projectProjectChecklist->project_checklist_id = $duplicatedChecklist->id;
-                $projectProjectChecklist->is_cloned = true; // Marcar como clonado
                 $projectProjectChecklist->save();
 
                 foreach ($originalChecklist->projectChecks as $check) {
