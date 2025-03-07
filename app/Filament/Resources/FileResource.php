@@ -28,9 +28,9 @@ class FileResource extends Resource
                     ->required(),
                 Forms\Components\FileUpload::make('path')
                     ->label('File')
-                    ->disk('local')
+                    ->disk('public')
                     ->directory('files')
-                    ->visibility('private')
+                    ->visibility('public')
                     ->required(),
             ]);
     }
@@ -42,13 +42,20 @@ class FileResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nombre'),
                 Tables\Columns\ImageColumn::make('path')
-                    ->label('Archivo'),
+                    ->label('Archivo')
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\Action::make('download')
+                    ->label('Descargar')
+                    ->icon('heroicon-m-arrow-down-tray')
+                    ->url(fn(File $record) => route('files.download', $record))
+                    ->openUrlInNewTab(false) // No abre una nueva pestaña
+                    ->color('secondary')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
