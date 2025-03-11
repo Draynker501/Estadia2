@@ -10,7 +10,7 @@ class File extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'path'];
+    protected $fillable = ['name', 'path', 'mime'];
 
     protected static function booted()
     {
@@ -25,6 +25,12 @@ class File extends Model
         static::updating(function ($file) {
             if ($file->isDirty('path')) { // Verifica si el archivo ha cambiado
                 Storage::disk('public')->delete($file->getOriginal('path')); // Borra el archivo anterior
+            }
+        });
+
+        static::saving(function ($file) {
+            if ($file->path) {
+                $file->mime = pathinfo($file->path, PATHINFO_EXTENSION);
             }
         });
     }
@@ -45,5 +51,15 @@ class File extends Model
         }, $fileName, [
             'Content-Type' => $mimeType,
         ]);
+    }
+
+    public function setPathAttribute($value)
+    {
+        $this->attributes['path'] = pathinfo($value, PATHINFO_BASENAME);
+    }
+
+    public function getPathAttribute($value)
+    {
+        return 'files/' . $value; // This ensures that when retrieving, it includes 'files/'
     }
 }

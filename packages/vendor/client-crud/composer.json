@@ -1,0 +1,21 @@
+{
+    "name": "vendor/client-crud",
+    "description": "Paquete de filament para la gestión de clientes",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Vendor\\ClientCrud\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^8.0",
+        "filament/filament": "^3.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Vendor\\ClientCrud\\ClientCrudServiceProvider"
+            ]
+        }
+    }
+}
