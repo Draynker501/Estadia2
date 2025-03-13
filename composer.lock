@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bfa9946b26f29772b5cf7a6da0c77e84",
+    "content-hash": "5825105932560330f3764353db8f46d8",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -8372,6 +8372,37 @@
             "time": "2024-12-21T16:25:41+00:00"
         },
         {
+            "name": "vendor/client-crud",
+            "version": "dev-paquete",
+            "dist": {
+                "type": "path",
+                "url": "packages/vendor/client-crud",
+                "reference": "ec563cb992a79734a9ffee9afd11902c0d126488"
+            },
+            "require": {
+                "filament/filament": "^3.3",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.19"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Vendor\\ClientCrud\\ClientCrudServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Vendor\\ClientCrud\\": "src/"
+                }
+            },
+            "description": "Paquete de filament para la gestión de clientes",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
             "name": "vlucas/phpdotenv",
             "version": "v5.6.1",
             "source": {
@@ -11261,7 +11292,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "vendor/client-crud": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
