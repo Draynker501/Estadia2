@@ -7,6 +7,8 @@ use Filament\Resources\Resource;
 use Filament\Forms;
 use Filament\Tables;
 use Spatie\LaravelPackageTools\Package;
+use Vendor\ClientCrud\Resources\ClientResource;
+use Filament\Facades\Filament;
 
 class ClientCrudServiceProvider extends ServiceProvider
 {
@@ -20,6 +22,9 @@ class ClientCrudServiceProvider extends ServiceProvider
         // Registra recursos, rutas, migraciones, etc.
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
+        Filament::registerResources([
+            ClientResource::class,
+        ]);
     }
 
     public function configurePackage(Package $package): void
