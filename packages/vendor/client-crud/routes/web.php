@@ -1,12 +1,9 @@
 <?php
 use Illuminate\Support\Facades\Route;
-use Vendor\ClientCrud\Resources\ClientResource;
 use Filament\Facades\Filament;
 
-Route::middleware(['web'])
+Route::middleware(['web', 'auth'])
     ->prefix('admin')
     ->group(function () {
-        Filament::registerResources([
-            ClientResource::class,
-        ]);
+        Filament::routes();
     });
