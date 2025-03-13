@@ -2,9 +2,9 @@
 
 namespace Vendor\ClientCrud\Resources;
 
-use App\Filament\Resources\ClientResource\Pages;
-use App\Filament\Resources\ClientResource\RelationManagers;
-use App\Models\Client;
+use Vendor\ClientCrud\Resources\ClientResource\Pages;
+use Vendor\ClientCrud\Resources\ClientResource\RelationManagers;
+use Vendor\ClientCrud\Models\Client;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
