@@ -26,15 +26,12 @@ class ClientCrudServiceProvider extends ServiceProvider
             ClientResource::class,
         ]);
 
-        // Carga las rutas de Filament
-        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
     }
 
     public function configurePackage(Package $package): void
     {
         $package
             ->name('client-crud')
-            ->hasRoutes('web')
             ->hasMigrations(['2014_10_12_000000_create_users_table', '2025_01_14_155632_create_clients_table']);
     }
 }
