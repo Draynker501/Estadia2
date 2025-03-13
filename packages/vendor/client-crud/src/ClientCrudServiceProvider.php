@@ -2,6 +2,7 @@
 
 namespace Vendor\ClientCrud;
 
+use Filament\Panel;
 use Illuminate\Support\ServiceProvider;
 use Filament\Resources\Resource;
 use Filament\Forms;
@@ -22,9 +23,11 @@ class ClientCrudServiceProvider extends ServiceProvider
         // Registra recursos, rutas, migraciones, etc.
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
-        Filament::registerResources([
+    Filament::serving(function () {
+        Filament::registerPanelResources(Panel::ADMIN, [
             ClientResource::class,
         ]);
+    });
 
     }
 
@@ -32,6 +35,6 @@ class ClientCrudServiceProvider extends ServiceProvider
     {
         $package
             ->name('client-crud')
-            ->hasMigrations(['2014_10_12_000000_create_users_table', '2025_01_14_155632_create_clients_table']);
+            ->hasMigrations(['2025_01_14_155632_create_clients_table']);
     }
 }

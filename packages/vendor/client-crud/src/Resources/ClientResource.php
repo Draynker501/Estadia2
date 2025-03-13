@@ -28,6 +28,11 @@ class ClientResource extends Resource
         return 'Administración';
     }
 
+    public static function getSlug(): string
+    {
+        return 'clients';
+    }
+
     //Hace referencia al formulario de customer (create y editar)
     public static function form(Form $form): Form
     {
