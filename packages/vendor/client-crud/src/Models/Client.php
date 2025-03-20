@@ -4,7 +4,6 @@ namespace Vendor\ClientCrud\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use SebastianBergmann\CodeCoverage\Report\Xml\Project;
 
 class Client extends Model
 {
@@ -37,22 +36,5 @@ class Client extends Model
                 $customer->user_id = auth()->id();
             }
         });
-    }
-
-    public function scopeFilterByAuthor($query)
-    {
-        $user = auth()->user();
-
-        // Aplica el filtro solo si hay un usuario autenticado y tiene el rol "Autor"
-        if ($user && $user->hasRole('Autor')) {
-            return $query->where('user_id', $user->id);
-        }
-
-        return $query;
-    }
-
-    public function project()
-    {
-        return $this->hasOne(Project::class);
     }
 }

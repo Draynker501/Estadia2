@@ -26,8 +26,8 @@ class UserSeeder extends Seeder
         // Crear el SuperAdmin con correo y contraseña superadmin@gmail.com
         $superAdmin = User::create([
             'name' => 'Super Admin',
-            'email' => 'superadmin@gmail.com',
-            'password' => bcrypt('superadmin@gmail.com'),
+            'email' => 'super@admin.com',
+            'password' => bcrypt('1234@'),
             'email_verified_at' => now(),
         ]);
 

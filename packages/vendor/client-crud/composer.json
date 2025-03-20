@@ -1,7 +1,8 @@
 {
     "name": "vendor/client-crud",
-    "description": "Paquete de filament para la gestión de clientes",
+    "description": "Paquete de recursos para el CRUD de clientes",
     "type": "library",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Vendor\\ClientCrud\\": "src/"
@@ -9,13 +10,13 @@
     },
     "require": {
         "php": "^8.1",
-        "filament/filament": "^3.3",
-        "spatie/laravel-package-tools": "^1.19"
+        "filament/filament": "^3.3.4",
+        "laravel/framework": "^10.0"
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Vendor\\ClientCrud\\ClientCrudServiceProvider"
+                "Vendor\\ClientCrud\\Providers\\ClientCrudServiceProvider"
             ]
         }
     }

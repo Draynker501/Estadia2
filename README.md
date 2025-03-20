@@ -17,7 +17,7 @@ Sigue estos pasos para dejar funcionando el proyecto:
 Abre la terminal en la ruta `C:\laragon\www` y ejecuta el siguiente comando para clonar el repositorio:
 
 ```bash
-git clone https://github.com/Draynker501/Estadia2.git
+git clone https://github.com/hunabku/sass_checklist_image.git
 ```
 
 ### 2. Navegar al directorio del proyecto
@@ -25,7 +25,7 @@ git clone https://github.com/Draynker501/Estadia2.git
 Ejecuta el siguiente comando para ubicarte en la ruta del proyecto
 
 ```bash
-cd Estadia2
+cd sass_checklist_image
 ```
 
 ### 3. Instala dependencias
@@ -74,5 +74,5 @@ php artisan test
 
 Para acceder como Super Admin, las credenciales son las siguientes:
 
-- **Email**: superadmin@gmail.com
-- **Password**: superadmin@gmail.com
+- **Email**: super@admin.com
+- **Password**: 1234@
